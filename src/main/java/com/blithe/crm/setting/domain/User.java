@@ -28,7 +28,7 @@ public class User {
     private String allowIps; // 允许访问的ip地址
     private String createTime; // 创建时间
     private String createBy; // 创建人
-    private String editeTime; // 编辑修改时间
+    private String editTime; // 编辑修改时间
     private String editBy; // 修改人
 
     public User() {
@@ -123,11 +123,11 @@ public class User {
     }
 
     public String getEditeTime() {
-        return editeTime;
+        return editTime;
     }
 
     public void setEditeTime(String editeTime) {
-        this.editeTime = editeTime;
+        this.editTime = editeTime;
     }
 
     public String getEditBy() {

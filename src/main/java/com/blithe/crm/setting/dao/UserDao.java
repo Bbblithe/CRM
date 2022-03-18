@@ -4,6 +4,8 @@ import com.blithe.crm.setting.domain.User;
 
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Author:  blithe.xwj
  * Date:    2022/3/17 10:36
@@ -12,5 +14,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface UserDao {
     User login(@Param("loginAct") String loginAct,@Param("loginPwd") String loginPwd);
+
+    List<User> selectUserList();
     // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
 }

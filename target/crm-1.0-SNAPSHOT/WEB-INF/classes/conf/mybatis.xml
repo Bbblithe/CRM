@@ -11,12 +11,17 @@
     <!--设置别名-->
     <typeAliases>
         <!--实体类所在的包名-->
-        <package name="com.blithe.crm.setting.domain" />
+        <package name="com.blithe.crm.setting.domain"/>
+        <package name="com.blithe.crm.workbench.domain" />
     </typeAliases>
 
     <!--sql mapper(sql映射文件的)的位置-->
     <mappers>
         <!--name是包名,这个包中所有的mapper.xml文件一次都能加载-->
-        <package name="com.blithe.crm.setting.dao" />
+        <package name=
+            "com.blithe.crm.setting.dao,
+            com.blithe.crm.workbench.dao"
+        />
     </mappers>
+    
 </configuration>

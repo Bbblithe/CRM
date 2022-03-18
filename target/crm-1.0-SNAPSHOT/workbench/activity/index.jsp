@@ -20,9 +20,94 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 	$(function(){
-		
-		
-		
+		// 为创建按钮，绑定事件，打开添加操作的模态窗口
+		$("#addBtn").click(function (){
+			$(".time").datetimepicker({
+				minView: "month",
+				language:  'zh-CN',
+				format: 'yyyy-mm-dd',
+				autoclose: true,
+				todayBtn: true,
+				pickerPosition: "bottom-left"
+			});
+
+			/*
+				操作模态窗口的方式
+					拿到操作的模态窗口的Jquery对象，调用modal方法，为该方法传递参数(show【打开模态窗口】 , hide【关闭模态窗口】 )
+			 */
+			// alert(123);
+
+			// 走后台，目的是为了取得用户信息列表，为所有者下拉框铺值
+
+			$.ajax({
+				url:"workbench/activity/getUserList.do",
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					/*
+						List<User> list
+
+						data:
+							[{用户1},{用户2},...]
+					 */
+					let html = ""
+					// 遍历出来的每一个n（第二个参数），就是一个对象
+					$.each(data,function(i,n){
+						html += "<option value='"+n.id+"'>" + n.name + "</option>"
+					})
+					$("#create-marketActivityOwner").html(html);
+
+					// 将当前登陆的用户，设置为下拉框默认的选项
+					// 取得当前登陆用户的id
+					let id = "${user.id}";
+					$("#create-marketActivityOwner").val(id);
+
+					// 所有者下拉框处理完毕之后，展现模态窗口
+					$("#createActivityModal").modal("show")
+				}
+			})
+
+		})
+
+		// 为保存按钮绑定时间，执行添加操作
+		$("#saveBtn").click(function(){
+			$.ajax({
+				url:"workbench/activity/save.do",
+				data:{
+					"owner":$.trim($("#create-marketActivityOwner").val()),
+					"name":$.trim($("#create-marketActivityName").val()),
+					"startDate":$.trim($("#create-startDate").val()),
+					"endDate":$.trim($("#create-endDate").val()),
+					"cost":$.trim($("#create-cost").val()),
+					"description":$.trim($("#create-description").val())
+				},
+				type:"post",
+				dataType: "json",
+				success:function(data){
+					/*
+						data
+							{"success":true/false}
+					 */
+					if(data.success){
+						// 添加成功
+						// 刷新市场活动信息列表（局部刷新）
+
+						// 清空添加操作模态窗口中的数据
+						// 提交表单
+						// $("#activityAddForm").submit();
+
+						// $("#activityAddForm").reset(); 该方法无法使用，jquery没有提供reset方法
+						// 因此将jqeury对象转换成原生js对象dom
+						$("#activityAddForm")[0].reset();
+
+						// 关闭添加操作的模态窗口
+						$("#createActivityModal").modal("hide");
+					}else {
+						alert("添加市场活动失败")
+					}
+				}
+			})
+		})
 	});
 	
 </script>
@@ -41,15 +126,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
-					
+					<form id="activityAddForm" class="form-horizontal" role="form">
+
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -61,11 +144,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startDate" readonly>
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endDate" readonly>
 							</div>
 						</div>
                         <div class="form-group">
@@ -78,7 +161,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -86,8 +169,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					
 				</div>
 				<div class="modal-footer">
+					<%--
+					 	data-dimiss="modal"：表示关闭窗口
+
+					 --%>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>
@@ -208,7 +295,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+					<!--
+						点击创建按钮，观察属性和属性值
+						data-toggle="modal"：
+							表示触发该按钮，将要打开一个模态窗口
+						data-target="#createActivityModal"：
+							表示要打开那个模态窗口，通过#id的方式找到该窗口
+
+						现在我们是以属性和属性值的方式写在button元素当中，用来打开模态窗口，
+						但是这样做是有问题：
+							问题在于没有对按钮的功能进行扩充
+						所以未来的实习项目开发，对于触发模态窗口的操作，一定不要写死在元素当中，
+						应该有我们自己写在js代码当中
+
+					-->
+				  <button type="button" class="btn btn-primary" id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>

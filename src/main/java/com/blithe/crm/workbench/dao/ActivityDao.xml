@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blithe.crm.workbench.dao.ActivityDao">
+    <!--<select id="test" resultType="com.blithe.crm.workbench.domain.Activity">-->
+    <!--    select * from crm.tbl_activity where id=${id}-->
+    <!--</select>-->
+
+    <insert id="save">
+        insert into crm.tbl_activity(id, owner, name, startDate, endDate,
+                                     cost, description, createTime, createBy
+                                     ) VALUES(
+                                            #{id}, #{owner}, #{name}, #{startDate}, #{endDate},
+                                            #{cost}, #{description}, #{createTime}, #{createBy})
+    </insert>
+</mapper>

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("settings/user")
 public class UserController {
 
     @Resource

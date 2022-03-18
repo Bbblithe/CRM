@@ -6,7 +6,15 @@
     <!--    select count(id) from crm.tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}-->
     <!--</select>-->
 
-    <select id="login" resultType="user">
-        select * from crm.tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}
+    <select id="login" resultType="com.blithe.crm.setting.domain.User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}
+    </select>
+
+    <select id="selectUserList" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user
     </select>
 </mapper>

@@ -65,7 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 			// 去后台验证登陆相关操作
 			$.ajax({
-				url:"user/login.do",
+				url:"settings/user/login.do",
 				data:{
 					"loginAct":loginAct,
 					"loginPwd":loginPwd

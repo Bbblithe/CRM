@@ -8,6 +8,8 @@ import com.blithe.crm.utils.DateTimeUtil;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -50,4 +52,10 @@ public class UserServiceImpl implements UserService {
     // public int loginUser(String loginAct, String loginPwd) {
     //     return dao.selectUser(loginAct,loginPwd);
     // }
+
+
+    @Override
+    public List<User> getUserList() {
+        return dao.selectUserList();
+    }
 }

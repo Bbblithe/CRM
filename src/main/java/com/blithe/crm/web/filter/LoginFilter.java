@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 public class LoginFilter implements Filter {
    @Override
    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-      System.out.println("进入到验证有没有登陆过的过滤器");
+      // System.out.println("进入到验证有没有登陆过的过滤器");
       HttpServletRequest request1 = (HttpServletRequest) request;
       HttpServletResponse response1 = (HttpServletResponse) response;
 

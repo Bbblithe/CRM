@@ -6,7 +6,16 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-    
+
+    <!--
+        add/create：跳转到添加页，或者打开添加操作的模态窗口
+        save：执行添加操作
+        edit：跳转到修改页，或者打开到操作的模态窗口
+        update：执行修改操作
+        get/find/query..：执行查询操作
+        特殊操作：login
+    -->
+
     <servlet>
         <servlet-name>myServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

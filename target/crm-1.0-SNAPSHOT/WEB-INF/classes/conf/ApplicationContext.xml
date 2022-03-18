@@ -20,9 +20,15 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.blithe.crm.setting.dao" />
+        <property name="basePackage" value=
+            "com.blithe.crm.setting.dao,
+            com.blithe.crm.workbench.dao"
+        />
     </bean>
 
-    <context:component-scan base-package="com.blithe.crm.setting.service" />
 
+    <context:component-scan base-package=
+        "com.blithe.crm.setting.service,
+        com.blithe.crm.workbench.service"
+    />
 </beans>
