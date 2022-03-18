@@ -13,6 +13,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		$(function (){
+
+			if(window.top != window){
+				window.top.location = window.location;
+			}
+
 			// 让页面加载完毕之后在登陆框中聚焦,将用户文本框的内容清空
 			$("#loginAct").val("");
 			$("#loginAct").focus();
