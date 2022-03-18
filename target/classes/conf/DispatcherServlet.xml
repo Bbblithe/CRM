@@ -14,4 +14,14 @@
     <context:component-scan base-package="com.blithe.crm.setting.web.controller"/>
 
     <mvc:annotation-driven/>
+
+    <!--由于interceptor无法拦截jsp动态资源，仅能拦截静态以及Controller控制器，因此放弃使用-->
+    <!--<mvc:interceptors>-->
+    <!--    &lt;!&ndash;第一个拦截器&ndash;&gt;-->
+    <!--    <mvc:interceptor>-->
+    <!--        <mvc:mapping path="/**.do" />-->
+    <!--        <mvc:exclude-mapping path="/user/login.do" />-->
+    <!--        <bean class="com.blithe.crm.handler.LoginInterceptor" />-->
+    <!--    </mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
 </beans>
