@@ -17,15 +17,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#loginAct").val("");
 			$("#loginAct").focus();
 
-			// 当账号或者密码获得焦点时，清除提示消息
-			// $("#loginAct").onfocus(function(){
-			// 	$("#msg").val("");
-			// })
-
-			// $("#loginPwd").onfocus(function(){
-			// 	$("#msg").val("");
-			// })
-
+			// // 当账号或者密码获得焦点时，清除提示消息
+            // $("#loginAct").focus(function(){
+            //     $("#msg").val("");
+            // })
+            //
+            // $("#loginPwd").focus(function (){
+            //     $("#msg").val("");
+            // })
 
 			// 为登陆按钮绑定事件，执行登陆操作
 			$("#submit").click(function(){
