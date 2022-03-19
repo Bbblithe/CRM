@@ -78,4 +78,11 @@ public class ActivityController {
         // map.put("startDate",startDate);
         // map.put("endDate",endDate);
     }
+
+    @RequestMapping("/delete.do")
+    public void deleteActivity(HttpServletResponse response,HttpServletRequest request){
+        String ids[] = request.getParameterValues("id");
+        boolean flag = activityService.delete(ids);
+        PrintJson.printJsonFlag(response,flag);
+    }
 }

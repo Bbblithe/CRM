@@ -2,6 +2,7 @@ package com.blithe.crm.workbench.service.impl;
 
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ActivityDao;
+import com.blithe.crm.workbench.dao.ActivityRemarkDao;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +24,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Resource
     private ActivityDao dao;
+    @Resource
+    private ActivityRemarkDao remarkDao;
 
     // @Override
     // public Activity test(String id){
@@ -49,5 +52,23 @@ public class ActivityServiceImpl implements ActivityService {
         PaginationVo<Activity> vo = new PaginationVo<>(total,list);
         // 将total和dataList封装在vo中，将vo返回
         return vo;
+    }
+
+    @Override
+    public boolean delete(String[] ids) {
+        boolean flag = true;
+        // 查询出需要删除的备注的数量
+        int count1 = remarkDao.getCountByIds(ids);
+
+        // 删除备注，返回收到影响的的记录条数（实际删除的数量）
+        int count2 = remarkDao.deleteByIds(ids);
+
+        flag = count1==count2;
+
+        // 删除市场活动
+        int count3 = dao.delete(ids);
+        flag = count3 == ids.length;
+
+        return flag;
     }
 }

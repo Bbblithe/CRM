@@ -2,7 +2,19 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blithe.crm.workbench.dao.ActivityRemarkDao">
-    <!--<select id="" resultType="">-->
-    
-    <!--</select>-->
+    <select id="getCountByIds" resultType="int">
+        select count(id) from crm.tbl_activity_remark
+        where activityId in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from crm.tbl_activity_remark
+        where activityId in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
 </mapper>

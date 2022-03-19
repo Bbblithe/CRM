@@ -64,4 +64,11 @@
 
         order by a.createTime desc
     </select>
+
+    <delete id="delete">
+        delete from crm.tbl_activity where id in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
 </mapper>
