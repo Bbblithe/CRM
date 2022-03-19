@@ -71,4 +71,14 @@
             #{aid}
         </foreach>
     </delete>
+
+    <select id="selectActivityById" resultType="Activity">
+        select * from crm.tbl_activity where id = #{id}
+    </select>
+
+    <update id="update">
+        update crm.tbl_activity set owner=#{owner}, name=#{name}, startDate=#{startDate},
+                                    endDate=#{endDate},cost=#{cost}, description=#{description},
+                                    editBy=#{editBy},editTime=#{editTime} where id=#{id}
+    </update>
 </mapper>

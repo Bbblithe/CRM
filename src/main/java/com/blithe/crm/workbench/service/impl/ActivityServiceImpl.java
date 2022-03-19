@@ -1,5 +1,8 @@
 package com.blithe.crm.workbench.service.impl;
 
+import com.blithe.crm.setting.dao.UserDao;
+import com.blithe.crm.setting.domain.User;
+import com.blithe.crm.vo.ListActivityVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ActivityDao;
 import com.blithe.crm.workbench.dao.ActivityRemarkDao;
@@ -26,6 +29,8 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityDao dao;
     @Resource
     private ActivityRemarkDao remarkDao;
+    @Resource
+    private UserDao userDao;
 
     // @Override
     // public Activity test(String id){
@@ -70,5 +75,20 @@ public class ActivityServiceImpl implements ActivityService {
         flag = count3 == ids.length;
 
         return flag;
+    }
+
+    @Override
+    public ListActivityVo<User> getUserListAndActivity(String id) {
+        User user = userDao.selectUser(id);
+        List<User> users = userDao.selectOtherUsers(id);
+
+        Activity activity = dao.selectActivityById(id);
+        ListActivityVo<User> vo = new ListActivityVo<>(user,users,activity);
+        return vo;
+    }
+
+    @Override
+    public boolean update(Activity activity) {
+        return dao.update(activity) == 1;
     }
 }

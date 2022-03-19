@@ -16,5 +16,10 @@ public interface UserDao {
     User login(@Param("loginAct") String loginAct,@Param("loginPwd") String loginPwd);
 
     List<User> selectUserList();
+
+    User selectUser(String id);
+
+    List<User> selectOtherUsers(String id);
+
     // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
 }

@@ -17,4 +17,16 @@
                lockState,deptno,allowIps,createTime,createBy,
                editTime,editBy from crm.tbl_user
     </select>
+
+    <select id="selectUser" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id=(select owner from crm.tbl_activity where crm.tbl_activity.id = #{id})
+    </select>
+
+    <select id="selectOtherUsers" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id!=(select owner from crm.tbl_activity where crm.tbl_activity.id = #{id})
+    </select>
 </mapper>

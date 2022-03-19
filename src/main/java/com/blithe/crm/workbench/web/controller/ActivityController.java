@@ -5,6 +5,7 @@ import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.PrintJson;
 import com.blithe.crm.utils.UUIDUtil;
+import com.blithe.crm.vo.ListActivityVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.service.ActivityService;
@@ -84,5 +85,44 @@ public class ActivityController {
         String ids[] = request.getParameterValues("id");
         boolean flag = activityService.delete(ids);
         PrintJson.printJsonFlag(response,flag);
+    }
+
+    @RequestMapping("/getUserListAndActivity.do")
+    @ResponseBody
+    public ListActivityVo<User> getUserListAndActivity(String id){
+        ListActivityVo<User> vo = activityService.getUserListAndActivity(id);
+        return vo;
+    }
+
+    /*
+    public void getActivityList(HttpServletResponse response,HttpServletRequest request, String owner, String name, String startDate,
+                                String endDate, String cost, String description){
+        String id = UUIDUtil.getUUID();
+        String createTime = DateTimeUtil.getSysTime();
+        boolean success = activityService.save(new Activity(id,owner,name,startDate,endDate,cost,description,createTime,
+                ((User)request.getSession().getAttribute("user")).getName(),"",""
+                ));
+
+        PrintJson.printJsonFlag(response,success);
+    }
+     */
+
+    @RequestMapping("/update.do")
+    public void UpdateActivity(HttpServletResponse response,HttpServletRequest request,
+                               String id,String owner,String name, String startDate,
+                               String endDate, String cost, String description){
+        String editTime = DateTimeUtil.getSysTime();
+        Activity activity = new Activity();
+        activity.setId(id);
+        activity.setEndDate(endDate);
+        activity.setCost(cost);
+        activity.setStartDate(startDate);
+        activity.setOwner(owner);
+        activity.setName(name);
+        activity.setDescription(description);
+        activity.setEditTime(editTime);
+        activity.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+        boolean success = activityService.update(activity);
+        PrintJson.printJsonFlag(response,success);
     }
 }

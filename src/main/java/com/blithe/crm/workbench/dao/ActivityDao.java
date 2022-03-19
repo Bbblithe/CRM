@@ -20,4 +20,8 @@ public interface ActivityDao {
     List<Activity> getActivityListByCondition(Activity activity);
 
     int delete(String[] ids);
+
+    Activity selectActivityById(String id);
+
+    int update(Activity activity);
 }
