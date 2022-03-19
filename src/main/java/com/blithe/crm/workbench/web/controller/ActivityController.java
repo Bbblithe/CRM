@@ -5,6 +5,7 @@ import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.PrintJson;
 import com.blithe.crm.utils.UUIDUtil;
+import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.service.ActivityService;
 
@@ -46,8 +47,6 @@ public class ActivityController {
         return userService.getUserList();
     }
 
-
-
     @RequestMapping("/save.do")
     public void getActivityList(HttpServletResponse response,HttpServletRequest request, String owner, String name, String startDate,
                                 String endDate, String cost, String description){
@@ -58,5 +57,25 @@ public class ActivityController {
                 ));
 
         PrintJson.printJsonFlag(response,success);
+    }
+
+    @RequestMapping("/pageList.do")
+    @ResponseBody
+    public PaginationVo<Activity> getPageActivity(HttpServletResponse response,int pageNo, int pageSize,String name,String owner,
+                                String startDate,String endDate){
+        System.out.println("进入到查询市场活动信息列表的操作（结合条件查询和分页查询）");
+
+        Activity activity = new Activity();
+        activity.setName(name);
+        activity.setOwner(owner);
+        activity.setStartDate(startDate);
+        activity.setEndDate(endDate);
+        PaginationVo<Activity> vo = activityService.pageList(activity,pageNo,pageSize);
+        return vo;
+        // Map<String,Object> map = new HashMap<>();
+        // map.put("name",name);
+        // map.put("owner",owner);
+        // map.put("startDate",startDate);
+        // map.put("endDate",endDate);
     }
 }
