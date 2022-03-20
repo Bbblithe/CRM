@@ -1,9 +1,9 @@
 package com.blithe.crm.workbench.service;
 
-import com.blithe.crm.setting.domain.User;
-import com.blithe.crm.vo.ListActivityVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
+
+import java.util.Map;
 
 /**
  * Author:  blithe.xwj
@@ -17,8 +17,7 @@ public interface ActivityService {
     PaginationVo<Activity> pageList(Activity activity,int pageNo,int pageSize);
 
     boolean delete(String[] ids);
-
-    ListActivityVo<User> getUserListAndActivity(String id);
+    Map<String,Object> getUserListAndActivity(String id);
 
     boolean update(Activity activity);
 

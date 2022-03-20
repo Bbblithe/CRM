@@ -79,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				url:"workbench/activity/save.do",
 				data:{
 					"owner":$.trim($("#create-owner").val()),
-					"name":$.trim($("#create-owner").val()),
+					"name":$.trim($("#create-activityName").val()),
 					"startDate":$.trim($("#create-startDate").val()),
 					"endDate":$.trim($("#create-endDate").val()),
 					"cost":$.trim($("#create-cost").val()),
@@ -99,6 +99,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						// 清空添加操作模态窗口中的数据
 						// 提交表单
 						// $("#activityAddForm").submit();
+						// pageList(1,2)
+
+						/**
+						 *  $("#activityPage").bs_pagination('getOption','currentPage'
+						 *  	操作后停留在当前页
+						 *  $("#activityPage").bs_pagination('getOption','rowsPerPage')
+						 *  	操作后维持已经设置好的每页展现的记录数
+						 *
+						 * 	这两个参数不需要我们进行任何的修改操作，直接使用即可
+						 */
+						pageList(1,
+								$("#activityPage").bs_pagination('getOption','rowsPerPage'));
 
 						// $("#activityAddForm").reset(); 该方法无法使用，jquery没有提供reset方法
 						// 因此将jqeury对象转换成原生js对象dom
@@ -128,7 +140,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#hidden-startDate").val($.trim($("#search-startDate").val()))
 			$("#hidden-endDate").val($.trim($("#search-endDate").val()))
 
-			pageList(1,2);
+			pageList($("#activityPage").bs_pagination('getOption','currentPage'),
+					$("#activityPage").bs_pagination('getOption','rowsPerPage'));
 		})
 
 		// 为全选的复选框绑定事件，触发全选操作
@@ -184,7 +197,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							if(data.success){
 
 								// 删除成功后
-								pageList(1,2);
+								pageList($("#activityPage").bs_pagination('getOption','currentPage'),
+										$("#activityPage").bs_pagination('getOption','rowsPerPage'));
 
 							}else {
 								alert("删除市场活动失败");
@@ -236,6 +250,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		})
 
+		/*
+			为更新按钮绑定事件，执行市场活动的执行顺序
+			在实际项目开发中，一定是按照先做添加再做修改的这种顺序
+			为了节省开发事件，修改操作一般做到的都是添加的copy操作
+		 */
+
 		$("#updateBtn").click(function(){
 			$.ajax({
 				url:"workbench/activity/update.do",
@@ -257,8 +277,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 */
 					if(data.success){
 						// 关闭添加操作的模态窗口
-						pageList(1,2);
-						$("#editActivityModal").modal("hide");
+						pageList($("#activityPage").bs_pagination('getOption','currentPage'),
+								$("#activityPage").bs_pagination('getOption','rowsPerPage'));
+						$ ("#editActivityModal").modal("hide");
 
 					}else {
 						alert("更新市场活动失败")
@@ -371,7 +392,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<input type="hidden" id="hidden-owner"/>
 	<input type="hidden" id="hidden-startDate"/>
 	<input type="hidden" id="hidden-endDate"/>
-	<input type="hidden" id="hidden-id">
 
 	<!-- 创建市场活动的模态窗口 -->
 	<div class="modal fade" id="createActivityModal" role="dialog">
@@ -440,6 +460,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<!-- 修改市场活动的模态窗口 -->
+	<input type="hidden" id="hidden-id">
 	<div class="modal fade" id="editActivityModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">

@@ -5,7 +5,6 @@ import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.PrintJson;
 import com.blithe.crm.utils.UUIDUtil;
-import com.blithe.crm.vo.ListActivityVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.service.ActivityService;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -89,9 +89,10 @@ public class ActivityController {
 
     @RequestMapping("/getUserListAndActivity.do")
     @ResponseBody
-    public ListActivityVo<User> getUserListAndActivity(String id){
-        ListActivityVo<User> vo = activityService.getUserListAndActivity(id);
-        return vo;
+    public Map<String,Object> getUserListAndActivity(String id){
+        Map<String,Object> map= activityService.getUserListAndActivity(id);
+        // ListActivityVo<User> vo = activityService.getUserListAndActivity(id);
+        return map;
     }
 
     /*

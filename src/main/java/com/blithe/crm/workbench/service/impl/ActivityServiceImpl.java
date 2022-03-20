@@ -2,7 +2,6 @@ package com.blithe.crm.workbench.service.impl;
 
 import com.blithe.crm.setting.dao.UserDao;
 import com.blithe.crm.setting.domain.User;
-import com.blithe.crm.vo.ListActivityVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ActivityDao;
 import com.blithe.crm.workbench.dao.ActivityRemarkDao;
@@ -12,7 +11,9 @@ import com.github.pagehelper.PageHelper;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -78,13 +79,16 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public ListActivityVo<User> getUserListAndActivity(String id) {
+    public Map<String,Object> getUserListAndActivity(String id) {
         User user = userDao.selectUser(id);
         List<User> users = userDao.selectOtherUsers(id);
 
         Activity activity = dao.selectActivityById(id);
-        ListActivityVo<User> vo = new ListActivityVo<>(user,users,activity);
-        return vo;
+        Map<String,Object> map= new HashMap<>();
+        map.put("user",user);
+        map.put("userList",users);
+        map.put("activity",activity);
+        return map;
     }
 
     @Override
