@@ -24,4 +24,8 @@ public interface ActivityDao {
     Activity selectActivityById(String id);
 
     int update(Activity activity);
+
+    Activity getDetail(String id);
+
+    boolean deleteOne(String id);
 }

@@ -17,9 +17,14 @@ public interface ActivityService {
     PaginationVo<Activity> pageList(Activity activity,int pageNo,int pageSize);
 
     boolean delete(String[] ids);
+
+    boolean deleteOne(String id);
+
     Map<String,Object> getUserListAndActivity(String id);
 
     boolean update(Activity activity);
+
+    Activity detail(String id);
 
     // Activity test(String id);
 }

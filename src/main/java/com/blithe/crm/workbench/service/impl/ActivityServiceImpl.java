@@ -95,4 +95,14 @@ public class ActivityServiceImpl implements ActivityService {
     public boolean update(Activity activity) {
         return dao.update(activity) == 1;
     }
+
+    @Override
+    public Activity detail(String id) {
+        return dao.getDetail(id);
+    }
+
+    @Override
+    public boolean deleteOne(String id) {
+        return dao.deleteOne(id);
+    }
 }

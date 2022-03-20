@@ -12,6 +12,7 @@ import com.blithe.crm.workbench.service.ActivityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,12 @@ public class ActivityController {
         PrintJson.printJsonFlag(response,flag);
     }
 
+    @RequestMapping("/deleteOne.do")
+    public void deleteOneActivity(HttpServletResponse response,String id){
+        boolean flag = activityService.deleteOne(id);
+        PrintJson.printJsonFlag(response,flag);
+    }
+
     @RequestMapping("/getUserListAndActivity.do")
     @ResponseBody
     public Map<String,Object> getUserListAndActivity(String id){
@@ -125,5 +132,14 @@ public class ActivityController {
         activity.setEditBy(((User)request.getSession().getAttribute("user")).getName());
         boolean success = activityService.update(activity);
         PrintJson.printJsonFlag(response,success);
+    }
+
+    @RequestMapping("/detail.do")
+    public ModelAndView showRemark(String id){
+        ModelAndView mv = new ModelAndView();
+        Activity a = activityService.detail(id);
+        mv.addObject("activity",a);
+        mv.setViewName("/workbench/activity/detail.jsp");
+        return mv;
     }
 }

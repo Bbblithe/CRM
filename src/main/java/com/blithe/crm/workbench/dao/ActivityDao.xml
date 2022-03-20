@@ -72,6 +72,10 @@
         </foreach>
     </delete>
 
+    <delete id="deleteOne">
+        delete from crm.tbl_activity where id = #{id}
+    </delete>
+
     <select id="selectActivityById" resultType="Activity">
         select * from crm.tbl_activity where id = #{id}
     </select>
@@ -81,4 +85,14 @@
                                     endDate=#{endDate},cost=#{cost}, description=#{description},
                                     editBy=#{editBy},editTime=#{editTime} where id=#{id}
     </update>
+
+    <select id="getDetail" resultType="Activity">
+        select
+            a.id,a.name,u.name as owner,a.startDate,a.endDate,a.editTime,a.editBy,a.createBy,
+            a.createTime,a.description,a.cost
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner = u.id
+        where a.id=#{id}
+    </select>
 </mapper>
