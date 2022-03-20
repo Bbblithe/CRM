@@ -6,6 +6,7 @@ import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ActivityDao;
 import com.blithe.crm.workbench.dao.ActivityRemarkDao;
 import com.blithe.crm.workbench.domain.Activity;
+import com.blithe.crm.workbench.domain.ActivityRemark;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.github.pagehelper.PageHelper;
 
@@ -104,5 +105,30 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public boolean deleteOne(String id) {
         return dao.deleteOne(id);
+    }
+
+    @Override
+    public List<ActivityRemark> selectActivityRemarkList(String id) {
+        return remarkDao.selectActivityRemarkListById(id);
+    }
+
+    @Override
+    public boolean saveRemark(ActivityRemark ar) {
+        return remarkDao.saveRemark(ar) == 1;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        return remarkDao.deleteById(id) == 1;
+    }
+
+    @Override
+    public boolean updateRemark(String remarkId, String noteContent,String editBy,String editTime) {
+        return remarkDao.updateRemark(remarkId,noteContent,editBy,editTime,"1") == 1;
+    }
+
+    @Override
+    public ActivityRemark selectAR(String remarkId) {
+        return remarkDao.selectAr(remarkId);
     }
 }

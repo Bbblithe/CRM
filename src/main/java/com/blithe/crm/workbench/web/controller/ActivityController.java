@@ -7,6 +7,7 @@ import com.blithe.crm.utils.PrintJson;
 import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
+import com.blithe.crm.workbench.domain.ActivityRemark;
 import com.blithe.crm.workbench.service.ActivityService;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -141,5 +143,52 @@ public class ActivityController {
         mv.addObject("activity",a);
         mv.setViewName("/workbench/activity/detail.jsp");
         return mv;
+    }
+
+    @RequestMapping("/getRemarkListByAId.do")
+    @ResponseBody
+    public List<ActivityRemark> getRemarkListById(String activityId){
+        return activityService.selectActivityRemarkList(activityId);
+    }
+
+    @RequestMapping("/deleteRemark.do")
+    public void deleteRemark(HttpServletResponse response ,String id){
+        PrintJson.printJsonFlag(response,activityService.deleteRemark(id));
+    }
+
+    @RequestMapping("/saveRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveRemark(HttpServletRequest request,String activityId,String noteContent){
+        String id = UUIDUtil.getUUID();
+        String createTime =  DateTimeUtil.getSysTime();
+        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        String editFlag = "0";
+        ActivityRemark ar = new ActivityRemark();
+        ar.setActivityId(activityId);
+        ar.setId(id);
+        ar.setNoteContent(noteContent);
+        ar.setCreateTime(createTime);
+        ar.setCreateBy(createBy);
+        ar.setEditFlag(editFlag);
+
+        boolean flag = activityService.saveRemark(ar);
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",flag);
+        map.put("ar",ar);
+        return map;
+    }
+
+    @RequestMapping("/updateRemark.do")
+    @ResponseBody
+    public Map<String,Object> updateRemark(HttpServletRequest request,String id,String noteContent){
+
+        boolean flag = activityService.updateRemark(id,noteContent,
+                ((User)request.getSession().getAttribute("user")).getName(),
+                DateTimeUtil.getSysTime());
+        ActivityRemark ar = activityService.selectAR(id);
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",flag);
+        map.put("ar",ar);
+        return map;
     }
 }

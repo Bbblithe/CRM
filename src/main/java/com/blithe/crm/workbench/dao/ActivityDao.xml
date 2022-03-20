@@ -95,4 +95,5 @@
         on a.owner = u.id
         where a.id=#{id}
     </select>
+
 </mapper>

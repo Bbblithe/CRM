@@ -17,4 +17,31 @@
             #{aid}
         </foreach>
     </delete>
+
+    <select id="selectActivityRemarkListById" resultType="ActivityRemark">
+        select id,noteContent, createTime,createBy,editTime,editBy,editFlag,activityId
+        from crm.tbl_activity_remark where activityId=#{id} order by createTime
+    </select>
+
+    <delete id="deleteById">
+        delete from crm.tbl_activity_remark
+        where id = #{id}
+    </delete>
+
+    <insert id="saveRemark">
+        insert into
+            crm.tbl_activity_remark(id,activityId,createTime,createBy,editFlag,noteContent)
+        values
+               (#{id},#{activityId},#{createTime},#{createBy},#{editFlag},#{noteContent})
+    </insert>
+
+    <update id="updateRemark">
+        update crm.tbl_activity_remark set noteContent = #{noteContent},editTime = #{editTime},
+            editFlag=#{editFlag},editBy=#{editBy} where id=#{remarkId}
+    </update>
+
+    <select id="selectAr" resultType="ActivityRemark">
+        select id,noteContent, createTime,createBy,editTime,editBy,editFlag,activityId
+        from crm.tbl_activity_remark where id=#{remarkId}
+    </select>
 </mapper>

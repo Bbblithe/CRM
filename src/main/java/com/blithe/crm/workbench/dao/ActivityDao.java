@@ -28,4 +28,5 @@ public interface ActivityDao {
     Activity getDetail(String id);
 
     boolean deleteOne(String id);
+
 }

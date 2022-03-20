@@ -2,7 +2,9 @@ package com.blithe.crm.workbench.service;
 
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
+import com.blithe.crm.workbench.domain.ActivityRemark;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,16 @@ public interface ActivityService {
     boolean update(Activity activity);
 
     Activity detail(String id);
+
+    List<ActivityRemark> selectActivityRemarkList(String id);
+
+    boolean deleteRemark(String id);
+
+    boolean saveRemark(ActivityRemark ar);
+
+    boolean updateRemark(String remarkId, String noteContent,String editBy,String editTime);
+
+    ActivityRemark selectAR(String remarkId);
 
     // Activity test(String id);
 }
