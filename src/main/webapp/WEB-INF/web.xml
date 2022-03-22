@@ -35,7 +35,7 @@
         <filter-name>loginFilter</filter-name>
         <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
-
+    
     <servlet-mapping>
         <servlet-name>myServlet</servlet-name>
         <url-pattern>*.do</url-pattern>
@@ -47,6 +47,10 @@
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.blithe.crm.web.filter.SysInitListener</listener-class>
     </listener>
 
     <filter>

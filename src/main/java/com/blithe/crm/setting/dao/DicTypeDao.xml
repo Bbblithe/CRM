@@ -2,7 +2,8 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blithe.crm.setting.dao.DicTypeDao">
-    <select id="" resultType="">
-    
+
+    <select id="getTypeList" resultType="DicType">
+        select code, name, description from crm.tbl_dic_type
     </select>
 </mapper>
