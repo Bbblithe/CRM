@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -85,5 +86,45 @@ class ClueController {
         clue.setFullname(fullname);
         clue.setMphone(mphone);
         return clueService.pageList(pageNo,pageSize,clue);
+    }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public Boolean deleteClue(HttpServletRequest request){
+        String[] ids = request.getParameterValues("id");
+        return clueService.delete(ids);
+    }
+
+    @RequestMapping("getUserListAndClue.do")
+    @ResponseBody
+    public Map<String,Object> getUserListAndClueList(String id){
+        return clueService.getUserListAndClue(id);
+    }
+
+    @RequestMapping("update.do")
+    @ResponseBody
+    public boolean updateClue(String company,String id,String fullname,String appellation, String owner,
+            String job,String email,String phone,String source,String state,String website,String description,
+            String contactSummary,String nextContactTime,String address,String mphone,HttpServletRequest request){
+        Clue clue = new Clue();
+        clue.setMphone(mphone);
+        clue.setCompany(company);
+        clue.setId(id);
+        clue.setFullname(fullname);
+        clue.setAddress(address);
+        clue.setAppellation(appellation);
+        clue.setJob(job);
+        clue.setEmail(email);
+        clue.setPhone(phone);
+        clue.setState(state);
+        clue.setSource(source);
+        clue.setContactSummary(contactSummary);
+        clue.setNextContactTime(nextContactTime);
+        clue.setWebsite(website);
+        clue.setOwner(owner);
+        clue.setDescription(description);
+        clue.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+        clue.setEditTime(DateTimeUtil.getSysTime());
+        return clueService.update(clue);
     }
 }

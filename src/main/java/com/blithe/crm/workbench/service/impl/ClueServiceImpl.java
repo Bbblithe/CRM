@@ -1,5 +1,7 @@
 package com.blithe.crm.workbench.service.impl;
 
+import com.blithe.crm.setting.dao.UserDao;
+import com.blithe.crm.setting.domain.User;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ClueDao;
 import com.blithe.crm.workbench.domain.Clue;
@@ -8,7 +10,9 @@ import com.github.pagehelper.PageHelper;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,6 +24,9 @@ import javax.annotation.Resource;
 
 @Service
 public class ClueServiceImpl implements ClueService {
+    @Resource
+    private UserDao userDao;
+
     @Resource
     private ClueDao clueDao;
 
@@ -38,5 +45,28 @@ public class ClueServiceImpl implements ClueService {
         vo.setTotal(total);
         vo.setDataList(clueList);
         return vo;
+    }
+
+    @Override
+    public Boolean delete(String[] ids) {
+        return clueDao.deleteClues(ids) == ids.length;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndClue(String id) {
+        User user = userDao.selectUserByC(id);
+        List<User> userList = userDao.selectOtherUsersByC(id);
+
+        Clue clue = clueDao.selectClue(id);
+        Map<String,Object> map = new HashMap<>();
+        map.put("user",user);
+        map.put("userList",userList);
+        map.put("clue",clue);
+        return map;
+    }
+
+    @Override
+    public boolean update(Clue clue) {
+        return clueDao.update(clue) == 1;
     }
 }

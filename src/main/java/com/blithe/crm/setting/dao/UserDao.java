@@ -17,9 +17,13 @@ public interface UserDao {
 
     List<User> selectUserList();
 
-    User selectUser(String id);
+    User selectUserByA(String id);
 
-    List<User> selectOtherUsers(String id);
+    List<User> selectOtherUsersByA(String id);
+
+    List<User> selectOtherUsersByC(String id);
+
+    User selectUserByC(String id);
 
     // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
 }

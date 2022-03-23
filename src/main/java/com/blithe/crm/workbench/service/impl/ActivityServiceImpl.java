@@ -81,8 +81,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Map<String,Object> getUserListAndActivity(String id) {
-        User user = userDao.selectUser(id);
-        List<User> users = userDao.selectOtherUsers(id);
+        User user = userDao.selectUserByA(id);
+        List<User> users = userDao.selectOtherUsersByA(id);
 
         Activity activity = dao.selectActivityById(id);
         Map<String,Object> map= new HashMap<>();

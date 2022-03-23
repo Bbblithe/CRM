@@ -10,4 +10,10 @@ public interface ClueDao {
     int getTotal(Clue clue);
 
     List<Clue> selectClueListByCondition(Clue clue);
+
+    int deleteClues(String[] ids);
+
+    Clue selectClue(String id);
+
+    int update(Clue clue);
 }
