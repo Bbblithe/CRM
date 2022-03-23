@@ -4,9 +4,74 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.blithe.crm.workbench.dao.ClueDao">
-	
-	
-  	
+    <insert id="save">
+        insert into crm.tbl_clue(id, fullname, appellation, owner, company,
+                                 job, email, phone, website, mphone, state,
+                                 source, createBy, createTime,description,
+                                 contactSummary, nextContactTime, address)
+        VALUES(
+                  #{id}, #{fullname}, #{appellation}, #{owner}, #{company},
+                  #{job}, #{email}, #{phone}, #{website}, #{mphone}, #{state},
+                  #{source}, #{createBy}, #{createTime},#{description},
+                  #{contactSummary}, #{nextContactTime}, #{address}
+              )
+    </insert>
+
+    <select id="getTotal" resultType="int">
+        select count(c.id) from crm.tbl_clue c join crm.tbl_user u on c.owner = u.id
+            <where>
+                <if test="fullname!=null and fullname!=''">
+                    c.fullname like '%' #{fullname} '%'
+                </if>
+                <if test="company!=null and company!=''">
+                    and c.company like '%' #{company} '%'
+                </if>
+                <if test="phone!=null and phone!=''">
+                    and c.phone like '%' #{phone} '%'
+                </if>
+                <if test="source!=null and source!=''">
+                    and c.source like '%' #{source} '%'
+                </if>
+                <if test="owner!=null and owner!=''">
+                    and u.name like '%' #{owner} '%'
+                </if>
+                <if test="phone!=null and phone!=''">
+                    and c.phone like '%' #{phone} '%'
+                </if>
+                <if test="state!=null and state!=''">
+                    and c.state like '%' #{state} '%'
+                </if>
+            </where>
+    </select>
+
+    <select id="selectClueListByCondition" resultType="Clue">
+        select c.id,c.fullname,c.appellation,u.name as owner,c.company,c.phone,c.mphone,c.source,c.state from crm.tbl_clue c join crm.tbl_user u on c.owner = u.id
+            <where>
+                <if test="fullname!=null and fullname!=''">
+                    c.fullname like '%' #{fullname} '%'
+                </if>
+                <if test="company!=null and company!=''">
+                    and c.company like '%' #{company} '%'
+                </if>
+                <if test="phone!=null and phone!=''">
+                    and c.phone like '%' #{phone} '%'
+                </if>
+                <if test="source!=null and source!=''">
+                    and c.source like '%' #{source} '%'
+                </if>
+                <if test="owner!=null and owner!=''">
+                    and u.name like '%' #{owner} '%'
+                </if>
+                <if test="phone!=null and phone!=''">
+                    and c.phone like '%' #{phone} '%'
+                </if>
+                <if test="state!=null and state!=''">
+                    and c.state like '%' #{state} '%'
+                </if>
+            </where>
+            order by c.createTime desc
+
+    </select>
 </mapper>
 
 

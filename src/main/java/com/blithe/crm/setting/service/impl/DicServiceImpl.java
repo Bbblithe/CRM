@@ -39,7 +39,7 @@ public class DicServiceImpl implements DicService {
         for(DicType dicType : list){
             // 取得每一个类型的value，并存在List之中
             List<DicValue> values = dicValueDao.getValues(dicType.getCode());
-            map.put(dicType.getName(),values);
+            map.put(dicType.getCode(),values);
         }
         return map;
     }

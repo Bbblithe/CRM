@@ -67,7 +67,6 @@ public class ActivityController {
     @ResponseBody
     public PaginationVo<Activity> getPageActivity(HttpServletResponse response,int pageNo, int pageSize,String name,String owner,
                                 String startDate,String endDate){
-        System.out.println("进入到查询市场活动信息列表的操作（结合条件查询和分页查询）");
 
         Activity activity = new Activity();
         activity.setName(name);
