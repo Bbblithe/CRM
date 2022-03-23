@@ -61,7 +61,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		})
 
 		$("#searchBtn").click(function (){
-
             $("#hide-fullname").val($.trim($("#search-fullname").val()));
             $("#hide-company").val($.trim($("#search-company").val()));
             $("#hide-mphone").val($.trim($("#search-mphone").val()));
@@ -70,7 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             $("#hide-owner").val($.trim($("#search-owner").val()));
             $("#hide-state").val($.trim($("#search-state").val()));
 
-            pageList(1,2);
+			pageList($("#cluePage").bs_pagination('getOption','currentPage'),
+					$("#cluePage").bs_pagination('getOption','rowsPerPage'));
 		})
 
 		$("#saveBtn").click(function (){
@@ -117,11 +117,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			})
 		})
 
+		$("#selectAll").click(function(){
+			$("input[name=xz]").prop("checked",this.checked)
+		})
+		$("#ClueBody").on("click",$("input[name=xz]"),function (){
+			$("#selectAll").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
+		})
+
 	});
 
 	function pageList(pageNo,pageSize){
 
-		// $("#selectAll").prop("checked",false);
+		$("#selectAll").prop("checked",false);
 
 		$("#search-fullname").val($.trim($("#hide-fullname").val()));
 		$("#search-company").val($.trim($("#hide-company").val()));
@@ -144,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				"owner":$("#search-owner").val(),
 				"state":$("#search-state").val()
 			},
-			type:"get",
+			type:"post",
 			dataType:"json",
 			success:function(data){
 				/*
@@ -175,7 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					rowsPerPage: pageSize, // 每页显示的记录条数
 					maxRowsPerPage: 20, // 每页最多显示的记录条数
 					totalPages: totalPages, // 总页数
-					totalRows: result.total, // 总记录条数
+					totalRows: data.total, // 总记录条数
 
 					visiblePageLinks: 3, // 显示几个卡片
 
@@ -516,7 +523,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">姓名</div>
-				      <input class="form-control" type="text" id="search-fullname">
+				      <input class="form-control" type="text" id="search-fullname" >
 				    </div>
 				  </div>
 				  
@@ -568,13 +575,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				      <div class="input-group-addon">线索状态</div>
 					  <select class="form-control" id="search-state">
 					  	<option></option>
-						  <c:forEach items="${state}" var="s">
-							  <option value="${s.value}">${s.text}</option>
+						  <c:forEach items="${clueState}" var="sta">
+							  <option value="${sta.value}">${sta.text}</option>
 						  </c:forEach>
 					  </select>
 				    </div>
 				  </div>
-				  <button class="btn btn-default" id="searchBtn">查询</button>
+				  <button type="button" class="btn btn-default" id="searchBtn">查询</button>
 				</form>
 			</div>
 
@@ -582,7 +589,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" id="createBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 				
