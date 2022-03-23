@@ -290,7 +290,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$.each(data.dataList,function(i,n){
 					html += '<tr>'
 					html += '	<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>'
-					html += '	<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/clue/detail.jsp?id='+n.id+'\';">'+n.fullname+n.appellation+'</a></td>'
+					html += '	<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/clue/detail.do?id='+n.id+'\';">'+n.fullname+n.appellation+'</a></td>'
 					html += '	<td>'+n.company+'</td>'
 					html += '	<td>'+n.phone+'</td>'
 					html += '	<td>'+n.mphone+'</td>'

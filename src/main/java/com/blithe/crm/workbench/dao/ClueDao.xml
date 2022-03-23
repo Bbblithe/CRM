@@ -104,6 +104,35 @@
                                 editTime = #{editTime}
         where id=#{id}
     </update>
+
+    <select id="detail" resultType="clue">
+        select
+            c.id,
+            c.fullname,
+            c.appellation,
+            u.name as owner,
+            c.company,
+            c.job,
+            c.email,
+            c.phone,
+            c.website,
+            c.mphone,
+            c.state,
+            c.source,
+            c.description,
+            c.contactSummary,
+            c.nextContactTime,
+            c.address,
+            c.editBy,
+            c.editTime,
+            c.createTime,
+            c.createBy
+        from crm.tbl_clue c
+        join crm.tbl_user u
+        on c.owner = u.id
+        where c.id=#{id}
+
+    </select>
 </mapper>
 
 

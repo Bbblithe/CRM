@@ -69,4 +69,9 @@ public class ClueServiceImpl implements ClueService {
     public boolean update(Clue clue) {
         return clueDao.update(clue) == 1;
     }
+
+    @Override
+    public Clue getDetail(String id) {
+        return clueDao.detail(id);
+    }
 }

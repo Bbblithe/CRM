@@ -11,6 +11,7 @@ import com.blithe.crm.workbench.service.ClueService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("workbench/clue")
-class ClueController {
+ class ClueController {
 
     @Resource
     UserService userService;
@@ -126,5 +127,13 @@ class ClueController {
         clue.setEditBy(((User)request.getSession().getAttribute("user")).getName());
         clue.setEditTime(DateTimeUtil.getSysTime());
         return clueService.update(clue);
+    }
+
+    @RequestMapping("detail.do")
+    public ModelAndView showDetail(String id){
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("clue",clueService.getDetail(id));
+        mv.setViewName("/workbench/clue/detail.jsp");
+        return mv;
     }
 }
