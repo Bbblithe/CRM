@@ -23,4 +23,6 @@ public interface ClueService {
     boolean update(Clue clue);
 
     Clue getDetail(String id);
+
+    boolean unband(String id);
 }

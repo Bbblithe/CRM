@@ -52,7 +52,62 @@
 		$(".myHref").mouseout(function(){
 			$(this).children("span").css("color","#E6E6E6");
 		});
+
+		// 页面加载完毕之后，取出关联的市场活动信息列表
+		showActivityList();
+
 	});
+
+	function showActivityList(){
+		$.ajax({
+			url:"workbench/clue/getActivityListByClueId.do",
+			data:{
+				"clueId":"${clue.id}"
+			},
+			type:"get",
+			dataType:"json",
+			success:function(result){
+				/*
+					result
+						{"dataList":["市场活动1:{"id":..,"owner":"张三",...},"市场活动2":{..},...]
+				 */
+				let html = ""
+
+				$.each(result,function (i,n){
+					html += '<tr>'
+					html += '	<td>'+n.name+'</td>'
+					html += '	<td>'+n.startDate+'</td>'
+					html += '	<td>'+n.endDate+'</td>'
+					html += '	<td>'+n.owner+'</td>'
+					html += '	<td><a href="javascript:void(0);" onclick="unband(\''+n.id+'\')" style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>'
+					html += '</tr>'
+				})
+
+				$("#activityBody").html(html);
+			}
+		})
+	}
+
+	/*
+		id：我们想要一个关联关系表的id
+	 */
+	function unband(id){
+		$.ajax({
+			url:"workbench/clue/unband.do",
+			data:{
+				"id":id
+			},
+			type:"post",
+			dataType:"json",
+			success:function(result){
+				if(result){
+					showActivityList()
+				}else{
+					alert("删除失败！");
+				}
+			}
+		})
+	}
 	
 </script>
 
@@ -436,21 +491,21 @@
 							<td></td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>发传单</td>
-							<td>2020-10-10</td>
-							<td>2020-10-20</td>
-							<td>zhangsan</td>
-							<td><a href="javascript:void(0);"  style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>
-						</tr>
-						<tr>
-							<td>发传单</td>
-							<td>2020-10-10</td>
-							<td>2020-10-20</td>
-							<td>zhangsan</td>
-							<td><a href="javascript:void(0);"  style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>
-						</tr>
+					<tbody id="activityBody">
+						 <%-- <tr>  --%>
+						 <%-- 	<td>发传单</td>  --%>
+						 <%-- 	<td>2020-10-10</td>  --%>
+						 <%-- 	<td>2020-10-20</td>  --%>
+						 <%-- 	<td>zhangsan</td>  --%>
+						 <%-- 	<td><a href="javascript:void(0);"  style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td>  --%>
+						 <%-- </tr>  --%>
+						<%-- <tr> --%>
+						<%-- 	<td>发传单</td> --%>
+						<%-- 	<td>2020-10-10</td> --%>
+						<%-- 	<td>2020-10-20</td> --%>
+						<%-- 	<td>zhangsan</td> --%>
+						<%-- 	<td><a href="javascript:void(0);"  style="text-decoration: none;"><span class="glyphicon glyphicon-remove"></span>解除关联</a></td> --%>
+						<%-- </tr> --%>
 					</tbody>
 				</table>
 			</div>

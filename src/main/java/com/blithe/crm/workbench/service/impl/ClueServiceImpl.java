@@ -3,6 +3,7 @@ package com.blithe.crm.workbench.service.impl;
 import com.blithe.crm.setting.dao.UserDao;
 import com.blithe.crm.setting.domain.User;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.dao.ClueActivityRelationDao;
 import com.blithe.crm.workbench.dao.ClueDao;
 import com.blithe.crm.workbench.domain.Clue;
 import com.blithe.crm.workbench.service.ClueService;
@@ -29,6 +30,9 @@ public class ClueServiceImpl implements ClueService {
 
     @Resource
     private ClueDao clueDao;
+
+    @Resource
+    private ClueActivityRelationDao clueActivityRelationDao;
 
     @Override
     public boolean save(Clue clue) {
@@ -73,5 +77,10 @@ public class ClueServiceImpl implements ClueService {
     @Override
     public Clue getDetail(String id) {
         return clueDao.detail(id);
+    }
+
+    @Override
+    public boolean unband(String id) {
+        return clueActivityRelationDao.unband(id) == 1;
     }
 }

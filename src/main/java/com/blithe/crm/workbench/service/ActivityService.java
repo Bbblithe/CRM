@@ -38,5 +38,7 @@ public interface ActivityService {
 
     ActivityRemark selectAR(String remarkId);
 
+    List<Activity> getActivityListByClueId(String clueId);
+
     // Activity test(String id);
 }

@@ -131,4 +131,10 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityRemark selectAR(String remarkId) {
         return remarkDao.selectAr(remarkId);
     }
+
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+        return dao.getActivityListByClueId(clueId);
+    }
 }

@@ -5,7 +5,9 @@ import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Clue;
+import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ClueService;
 
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 
     @Resource
     ClueService clueService;
+
+    @Resource
+    ActivityService activityService;
 
     @RequestMapping("getUserList.do")
     @ResponseBody
@@ -135,5 +140,17 @@ import javax.servlet.http.HttpServletRequest;
         mv.addObject("clue",clueService.getDetail(id));
         mv.setViewName("/workbench/clue/detail.jsp");
         return mv;
+    }
+
+    @RequestMapping("getActivityListByClueId.do")
+    @ResponseBody
+    public List<Activity> getActivityListByClueId(String clueId){
+        return activityService.getActivityListByClueId(clueId);
+    }
+
+    @RequestMapping("unband.do")
+    @ResponseBody
+    public boolean unband(String id){
+        return clueService.unband(id);
     }
 }

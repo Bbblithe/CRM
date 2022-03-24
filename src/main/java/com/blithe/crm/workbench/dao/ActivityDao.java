@@ -29,4 +29,5 @@ public interface ActivityDao {
 
     boolean deleteOne(String id);
 
+    List<Activity> getActivityListByClueId(String clueId);
 }
