@@ -2,10 +2,12 @@ package com.blithe.crm.workbench.service.impl;
 
 import com.blithe.crm.setting.dao.UserDao;
 import com.blithe.crm.setting.domain.User;
+import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ClueActivityRelationDao;
 import com.blithe.crm.workbench.dao.ClueDao;
 import com.blithe.crm.workbench.domain.Clue;
+import com.blithe.crm.workbench.domain.ClueActivityRelation;
 import com.blithe.crm.workbench.service.ClueService;
 import com.github.pagehelper.PageHelper;
 
@@ -82,5 +84,19 @@ public class ClueServiceImpl implements ClueService {
     @Override
     public boolean unband(String id) {
         return clueActivityRelationDao.unband(id) == 1;
+    }
+
+    @Override
+    public boolean bund(String clueId, String[] ids) {
+        boolean flag = true;
+        for(String id:ids){
+            ClueActivityRelation car = new ClueActivityRelation();
+            car.setId(UUIDUtil.getUUID());
+            car.setClueId(clueId);
+            car.setActivityId(id);
+
+            flag = clueActivityRelationDao.bund(car)==1;
+        }
+        return flag;
     }
 }

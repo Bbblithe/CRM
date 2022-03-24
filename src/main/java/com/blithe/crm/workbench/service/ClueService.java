@@ -25,4 +25,6 @@ public interface ClueService {
     Clue getDetail(String id);
 
     boolean unband(String id);
+
+    boolean bund(String clueId, String[] ids);
 }

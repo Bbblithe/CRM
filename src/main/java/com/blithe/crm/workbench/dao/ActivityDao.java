@@ -2,6 +2,8 @@ package com.blithe.crm.workbench.dao;
 
 import com.blithe.crm.workbench.domain.Activity;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -30,4 +32,6 @@ public interface ActivityDao {
     boolean deleteOne(String id);
 
     List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> selectActivityByNameAndNotAssociateByClueId(@Param("name") String name,@Param("clueId") String clueId);
 }

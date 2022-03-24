@@ -111,4 +111,20 @@
         on a.id = tcar.activityId
         where tcar.clueId = #{clueId}
     </select>
+
+    <select id="selectActivityByNameAndNotAssociateByClueId" resultType="Activity">
+        select
+            a.id,a.name,a.startDate,a.endDate,u.name as owner
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner=u.id
+        <where>
+               a.id not in(
+               select activityId from crm.tbl_clue_activity_relation where clueId=#{clueId}
+            )
+            <if test="name!=null and name!=''">
+                and a.name like '%' #{name} '%'
+            </if>
+        </where>
+    </select>
 </mapper>

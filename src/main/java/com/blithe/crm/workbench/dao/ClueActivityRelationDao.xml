@@ -7,7 +7,10 @@
     <delete id="unband">
         delete from crm.tbl_clue_activity_relation where id=#{id}
     </delete>
-  	
+
+    <insert id="bund">
+        insert into crm.tbl_clue_activity_relation(id, clueId, activityId) VALUES (#{id},#{clueId},#{activityId})
+    </insert>
 </mapper>
 
 

@@ -153,4 +153,17 @@ import javax.servlet.http.HttpServletRequest;
     public boolean unband(String id){
         return clueService.unband(id);
     }
+
+    @RequestMapping("getActivityListByNameAndNotAssociateByClueId.do")
+    @ResponseBody
+    public List<Activity> getActivityList(String aName,String clueId){
+        return activityService.selectActivityByNameAndNotAssociateByClueId(aName,clueId);
+    }
+
+    @RequestMapping("bund.do")
+    @ResponseBody
+    public boolean bund(String clueId,HttpServletRequest request){
+        String[] ids = request.getParameterValues("id");
+        return clueService.bund(clueId,ids);
+    }
 }

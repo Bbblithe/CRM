@@ -19,6 +19,14 @@
 	var cancelAndSaveBtnDefault = true;
 	
 	$(function(){
+
+		$("#selectAll").click(function(){
+			$("input[name=xz]").prop("checked",this.checked)
+		})
+		$("#activitySearchBody").on("click",$("input[name=xz]"),function (){
+			$("#selectAll").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
+		})
+
 		$("#remark").focus(function(){
 			if(cancelAndSaveBtnDefault){
 				//设置remarkDiv的高度为130px
@@ -56,6 +64,57 @@
 		// 页面加载完毕之后，取出关联的市场活动信息列表
 		showActivityList();
 
+
+		// 为关联市场活动模态窗口中的搜索框，绑定事件，通过触发回车键，查询并展现所需市场活动列表
+		$("#aName").keydown(function (event){
+			if(event.keyCode==13){
+				getActivityNotAssociate();
+				// 展现完列表后，将模态窗口的默认回车行为禁用掉
+				return false;
+			}
+		})
+
+		$("#connectBtn").click(function (){
+			getActivityNotAssociate();
+			$("#bundModal").modal("show");
+		})
+
+		// 为关联按钮绑定事件，执行关联表的添加操作
+		$("#bundBtn").click(function(){
+			let $xz = $("input[name=xz]:checked")
+
+			if($xz.length == 0){
+				alert("请选择需要关联的市场活动！");
+			}else{
+				// 1条或者多条
+
+				let param = "clueId=" + "${clue.id}&";
+
+				$.each($xz,function(i,n){
+					param += ("id="+n.value);
+					if(i < $xz.length - 1){
+						param +="&";
+					}
+				})
+				$.ajax({
+					url:"workbench/clue/bund.do",
+					data:param,
+					type:"post",
+					dataType:"json",
+					success:function(result){
+						if(result){
+							showActivityList();
+							// 清除搜索框中的信息
+							$("#aName").val("");
+							$("#selectAll").prop("checked",false);
+							$("#bundModal").modal("hide");
+						}else{
+							alert("关联失败！")
+						}
+					}
+				})
+			}
+		})
 	});
 
 	function showActivityList(){
@@ -108,6 +167,36 @@
 			}
 		})
 	}
+
+	function getActivityNotAssociate(){
+		$.ajax({
+			url:"workbench/clue/getActivityListByNameAndNotAssociateByClueId.do",
+			data:{
+				"aName":$.trim($("#aName").val()),
+				"clueId":"${clue.id}"
+			},
+			type:"get",
+			dataType:"json",
+			success:function(result){
+				/*
+                    data
+                    {"activityList":["activity1":{"id":2342,"onwer":"....",...},"activity2":{...},...]}
+                 */
+				let html = "";
+				$.each(result,function(i,n){
+					html += '<tr>'
+					html += '    <td><input type="checkbox" name="xz" value="'+n.id+'"/></td>'
+					html += '    <td>'+n.name+'</td>'
+					html += '    <td>'+n.startDate+'</td>'
+					html += '    <td>'+n.endDate+'</td>'
+					html += '    <td>'+n.owner+'</td>'
+					html += '</tr>'
+				})
+
+				$("#activitySearchBody").html(html);
+			}
+		})
+	}
 	
 </script>
 
@@ -128,7 +217,7 @@
 					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 						<form class="form-inline" role="form">
 						  <div class="form-group has-feedback">
-						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
+						    <input type="text" class="form-control" id="aName" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
 						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 						  </div>
 						</form>
@@ -136,7 +225,7 @@
 					<table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
 						<thead>
 							<tr style="color: #B3B3B3;">
-								<td><input type="checkbox"/></td>
+								<td><input type="checkbox" id="selectAll"/></td>
 								<td>名称</td>
 								<td>开始日期</td>
 								<td>结束日期</td>
@@ -144,27 +233,13 @@
 								<td></td>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><input type="checkbox"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
-							<tr>
-								<td><input type="checkbox"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
+						<tbody id="activitySearchBody">
 						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+					<button type="button" class="btn btn-primary" id="bundBtn">关联</button>
 				</div>
 			</div>
 		</div>
@@ -511,7 +586,7 @@
 			</div>
 			
 			<div>
-				<a href="javascript:void(0);" data-toggle="modal" data-target="#bundModal" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
+				<a href="javascript:void(0);" data-toggle="modal" id="connectBtn" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
 			</div>
 		</div>
 	</div>
