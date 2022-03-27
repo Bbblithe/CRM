@@ -55,6 +55,7 @@ public class ClueServiceImpl implements ClueService {
 
     @Override
     public Boolean delete(String[] ids) {
+        clueDao.disconnect(ids);
         return clueDao.deleteClues(ids) == ids.length;
     }
 
@@ -98,5 +99,14 @@ public class ClueServiceImpl implements ClueService {
             flag = clueActivityRelationDao.bund(car)==1;
         }
         return flag;
+    }
+
+    @Override
+    public boolean deleteClueById(String id) {
+        String[] ids = new String[1];
+        ids[0] = id;
+        clueDao.disconnect(ids);
+        int count2 = clueDao.deleteClues(ids);
+        return count2 == 1;
     }
 }

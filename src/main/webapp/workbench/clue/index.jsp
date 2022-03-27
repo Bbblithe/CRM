@@ -193,7 +193,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 						let clue = result.clue;
 						$("#edit-company").val(clue.company)
-						$("#edit-id").val(clue.id)
 						$("#edit-fullname").val(clue.fullname)
 						$("#edit-appellation").val(clue.appellation)
 						$("#edit-owner").val(clue.owner)

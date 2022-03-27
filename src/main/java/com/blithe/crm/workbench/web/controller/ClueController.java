@@ -166,4 +166,10 @@ import javax.servlet.http.HttpServletRequest;
         String[] ids = request.getParameterValues("id");
         return clueService.bund(clueId,ids);
     }
+
+    @RequestMapping("deleteClue.do")
+    @ResponseBody
+    public boolean deleteClue(String id){
+        return clueService.deleteClueById(id);
+    }
 }

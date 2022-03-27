@@ -79,6 +79,13 @@
             #{cid}
         </foreach>
     </delete>
+    
+    <delete id="disconnect">
+        delete from crm.tbl_clue_activity_relation where clueId =
+        <foreach collection="array" item="cid" open="(" close=")" separator=",">
+            #{cid}
+        </foreach>
+    </delete>
 
     <select id="selectClue" resultType="clue">
         select * from crm.tbl_clue where id = #{id};

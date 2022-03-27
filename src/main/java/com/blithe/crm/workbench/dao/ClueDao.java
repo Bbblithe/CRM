@@ -18,4 +18,6 @@ public interface ClueDao {
     int update(Clue clue);
 
     Clue detail(String id);
+
+    int disconnect(String[] ids);
 }
