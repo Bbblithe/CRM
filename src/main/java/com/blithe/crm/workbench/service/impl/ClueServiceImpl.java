@@ -6,8 +6,10 @@ import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ClueActivityRelationDao;
 import com.blithe.crm.workbench.dao.ClueDao;
+import com.blithe.crm.workbench.dao.ClueRemarkDao;
 import com.blithe.crm.workbench.domain.Clue;
 import com.blithe.crm.workbench.domain.ClueActivityRelation;
+import com.blithe.crm.workbench.domain.ClueRemark;
 import com.blithe.crm.workbench.service.ClueService;
 import com.github.pagehelper.PageHelper;
 
@@ -35,6 +37,9 @@ public class ClueServiceImpl implements ClueService {
 
     @Resource
     private ClueActivityRelationDao clueActivityRelationDao;
+
+    @Resource
+    private ClueRemarkDao clueRemarkDao;
 
     @Override
     public boolean save(Clue clue) {
@@ -108,5 +113,29 @@ public class ClueServiceImpl implements ClueService {
         clueDao.disconnect(ids);
         int count2 = clueDao.deleteClues(ids);
         return count2 == 1;
+    }
+
+    @Override
+    public List<ClueRemark> showRemarkList(String id) {
+        return clueRemarkDao.showRemarkList(id);
+    }
+
+    @Override
+    public Map<String, Object> saveRemark(ClueRemark cr) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",clueRemarkDao.saveRemark(cr) == 1);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateRemark(ClueRemark cr) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",clueRemarkDao.updateRemark(cr) == 1);
+        return map;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        return clueRemarkDao.deleteRemark(id) == 1;
     }
 }

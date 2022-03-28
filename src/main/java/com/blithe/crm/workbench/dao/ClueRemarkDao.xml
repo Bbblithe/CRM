@@ -5,7 +5,25 @@
 
 <mapper namespace="com.blithe.crm.workbench.dao.ClueRemarkDao">
 	
+    <select id="showRemarkList" resultType="ClueRemark">
+        select id,noteContent,createBy,createTime,editBy,editTime,editFlag from crm.tbl_clue_remark
+        where clueId = #{id}
+    </select>
 
+    <insert id="saveRemark">
+        insert into crm.tbl_clue_remark(id, noteContent, createBy, createTime, editFlag, clueId)
+        VALUES(#{id},#{noteContent},#{createBy},#{createTime},
+               #{editFlag},#{clueId})
+    </insert>
+
+    <update id="updateRemark">
+        update crm.tbl_clue_remark set noteContent=#{noteContent}, editFlag=#{editFlag},editTime=#{editTime},
+                                       editBy=#{editBy} where id=#{id}
+    </update>
+
+    <delete id="deleteRemark">
+        delete from crm.tbl_clue_remark where id=#{id}
+    </delete>
 </mapper>
 
 

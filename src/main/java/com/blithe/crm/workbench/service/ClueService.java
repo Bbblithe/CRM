@@ -2,7 +2,9 @@ package com.blithe.crm.workbench.service;
 
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Clue;
+import com.blithe.crm.workbench.domain.ClueRemark;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,4 +32,11 @@ public interface ClueService {
 
     boolean deleteClueById(String id);
 
+    List<ClueRemark> showRemarkList(String id);
+
+    Map<String, Object> saveRemark(ClueRemark cr);
+
+    Map<String, Object> updateRemark(ClueRemark cr);
+
+    boolean deleteRemark(String id);
 }

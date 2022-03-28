@@ -188,7 +188,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						html += '            <h5 id="e'+data.ar.id+'">'+data.ar.noteContent+'</h5>';
 						html += '            <font color="gray">市场活动</font> <font color="gray">-</font> <b>${activity.name}</b> <small style="color: gray;" id="s'+data.ar.id+'"> '+ (data.ar.createTime) +' 由'+(data.ar.createBy)+'</small>';
 						html += '            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">';
-						html += '                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
+						html += '                <a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+data.ar.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
 						html += '                &nbsp;&nbsp;&nbsp;&nbsp;';
 						html += '                <a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+data.ar.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
 						html += '            </div>';
@@ -229,15 +229,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(".remarkDiv").mouseout(function(){
 			$(this).children("div").children("div").hide();
 		});
-		
-		$(".myHref").mouseover(function(){
-			$(this).children("span").css("color","red");
-		});
-		
-		$(".myHref").mouseout(function(){
-			$(this).children("span").css("color","#E6E6E6");
-		});
-
 		$("#remarkBody").on("mouseover",".remarkDiv",function(){
 			$(this).children("div").children("div").show();
 		})
@@ -289,7 +280,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			type:"post",
 			dataType:"json",
 			success:function(data){
-				if(data.success){
+				if(data){
 					// 找到需要删除记录的div，将div异常
 					$("#"+id).remove();
 				}else{

@@ -151,8 +151,9 @@ public class ActivityController {
     }
 
     @RequestMapping("/deleteRemark.do")
-    public void deleteRemark(HttpServletResponse response ,String id){
-        PrintJson.printJsonFlag(response,activityService.deleteRemark(id));
+    @ResponseBody
+    public boolean deleteRemark(HttpServletResponse response ,String id){
+        return activityService.deleteRemark(id);
     }
 
     @RequestMapping("/saveRemark.do")

@@ -7,6 +7,7 @@ import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Clue;
+import com.blithe.crm.workbench.domain.ClueRemark;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ClueService;
 
@@ -171,5 +172,46 @@ import javax.servlet.http.HttpServletRequest;
     @ResponseBody
     public boolean deleteClue(String id){
         return clueService.deleteClueById(id);
+    }
+
+    @RequestMapping("showRemarkList.do")
+    @ResponseBody
+    public List<ClueRemark> showRemarkList(String id){
+        return clueService.showRemarkList(id);
+    }
+
+    @RequestMapping("saveRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveRemark(String clueId , String noteContent,HttpServletRequest request){
+        ClueRemark cr = new ClueRemark();
+        cr.setClueId(clueId);
+        cr.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        cr.setEditFlag("0");
+        cr.setId(UUIDUtil.getUUID());
+        cr.setCreateTime(DateTimeUtil.getSysTime());
+        cr.setNoteContent(noteContent);
+        Map<String,Object> map = clueService.saveRemark(cr);
+        map.put("cr",cr);
+        return map;
+    }
+
+    @RequestMapping("updateRemark.do")
+    @ResponseBody
+    public Map<String,Object> updateRemark(String id,String noteContent,HttpServletRequest request){
+        ClueRemark cr = new ClueRemark();
+        cr.setEditFlag("1");
+        cr.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+        cr.setEditTime(DateTimeUtil.getSysTime());
+        cr.setNoteContent(noteContent);
+        cr.setId(id);
+        Map<String,Object> map = clueService.updateRemark(cr);
+        map.put("cr",cr);
+        return map;
+    }
+
+    @RequestMapping("deleteRemark.do")
+    @ResponseBody
+    public boolean deleteRemark(String id){
+        return clueService.deleteRemark(id);
     }
 }
