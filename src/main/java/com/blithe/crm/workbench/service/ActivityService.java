@@ -42,5 +42,7 @@ public interface ActivityService {
 
     List<Activity> selectActivityByNameAndNotAssociateByClueId(String name,String clueId);
 
+    List<Activity> selectActivityByName(String aname);
+
     // Activity test(String id);
 }

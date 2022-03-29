@@ -127,4 +127,16 @@
             </if>
         </where>
     </select>
+
+    <select id="selectActivityByName" resultType="Activity">
+        select a.id,a.name,a.startDate,a.endDate,u.name as owner
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner=u.id
+        <where>
+            <if test="name!=null and name!=''">
+                and a.name like '%' #{name} '%'
+            </if>
+        </where>
+    </select>
 </mapper>

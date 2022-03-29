@@ -142,4 +142,9 @@ public class ActivityServiceImpl implements ActivityService {
     public List<Activity> selectActivityByNameAndNotAssociateByClueId(String name,String clueId) {
         return dao.selectActivityByNameAndNotAssociateByClueId(name,clueId);
     }
+
+    @Override
+    public List<Activity> selectActivityByName(String aname) {
+        return dao.selectActivityByName(aname);
+    }
 }

@@ -214,4 +214,21 @@ import javax.servlet.http.HttpServletRequest;
     public boolean deleteRemark(String id){
         return clueService.deleteRemark(id);
     }
+
+    @RequestMapping("getActivityListByName.do")
+    @ResponseBody
+    public List<Activity> getActivityListByName(String aname){
+        return activityService.selectActivityByName(aname);
+    }
+
+    @RequestMapping("convert.do")
+    @ResponseBody
+    public boolean convertClue(String clueId,String money,String expectedDate,String flag,String name,
+                               String stage,String activityId){
+        if("a".equals(flag)){
+            // 接收表单中的参数
+        }else{
+
+        }
+    }
 }

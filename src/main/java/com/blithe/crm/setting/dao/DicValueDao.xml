@@ -4,6 +4,6 @@
 <mapper namespace="com.blithe.crm.setting.dao.DicValueDao">
     <select id="getValues" resultType="DicValue">
         select id,value,text,orderNo,typeCode from crm.tbl_dic_value
-        where typeCode = #{code}
+        where typeCode = #{code} order by orderNo asc
     </select>
 </mapper>
