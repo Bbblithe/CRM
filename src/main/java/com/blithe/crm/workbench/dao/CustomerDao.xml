@@ -5,7 +5,18 @@
 
 <mapper namespace="com.blithe.crm.workbench.dao.CustomerDao">
 	
-  	
+  	<select id="getCustomerByName" resultType="Customer">
+        select * from crm.tbl_customer where name=#{name}
+    </select>
+
+    <insert id="save">
+        insert into crm.tbl_customer(id, owner, name, website, phone, createBy, createTime,
+                                     contactSummary, nextContactTime, description, address)
+         VALUES (
+                 #{id},#{owner},#{name},#{website},#{phone},#{createBy},#{createTime},
+                 #{contactSummary},#{nextContactTime},#{description},#{address}
+                )
+    </insert>
 </mapper>
 
 
