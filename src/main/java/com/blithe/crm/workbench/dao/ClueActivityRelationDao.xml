@@ -11,6 +11,14 @@
     <insert id="bund">
         insert into crm.tbl_clue_activity_relation(id, clueId, activityId) VALUES (#{id},#{clueId},#{activityId})
     </insert>
+
+    <select id="getListByClueId" resultType="ClueActivityRelation">
+        select id,activityId,clueId from crm.tbl_clue_activity_relation  where clueId=#{clueId}
+    </select>
+
+    <delete id="delete" >
+        delete from crm.tbl_clue_activity_relation where id=#{id}
+    </delete>
 </mapper>
 
 

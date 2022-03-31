@@ -8,6 +8,7 @@ import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Clue;
 import com.blithe.crm.workbench.domain.ClueRemark;
+import com.blithe.crm.workbench.domain.Tran;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ClueService;
 
@@ -221,30 +222,32 @@ import javax.servlet.http.HttpServletRequest;
         return activityService.selectActivityByName(aname);
     }
 
-    // @RequestMapping("convert.do")
-    // public ModelAndView convertClue(String clueId,String money,String expectedDate,String flag,String name,
-    //                            String stage,String activityId,HttpServletRequest request){
-    //     Tran t = null;
-    //     String createBy = ((User)request.getSession().getAttribute("user")).getName();
-    //     ModelAndView mv = new ModelAndView();
-    //     if("a".equals(flag)){
-    //         // 接收表单中的参数
-    //         t = new Tran();
-    //         t.setMoney(money);
-    //         t.setExpectedDate(expectedDate);
-    //         t.setName(name);
-    //         t.setStage(stage);
-    //         t.setActivityId(activityId);
-    //         t.setCreateBy(createBy);
-    //         t.setCreateTime(DateTimeUtil.getSysTime());
-    //     }
-    //
-    //     /*
-    //         为业务层传递的参数：
-    //             1、必须传递的参数clueId，有了这个clueId之后我们才知道要转换哪条记录
-    //             2、必须传递的参数t，因为在线索的转换的过程中，有可能会临时创建一笔新的交易（业务层接收的t也可能为null）
-    //      */
-    //     boolean flag1 = clueService.convert(clueId,t,createBy);
-    //     mv.setViewName("/workbench/clue/index.jsp");
-    // }
+    @RequestMapping("convert.do")
+    public ModelAndView convertClue(String clueId,String money,String expectedDate,String flag,String name,
+                               String stage,String activityId,HttpServletRequest request){
+        Tran t = null;
+        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        ModelAndView mv = new ModelAndView();
+        if("a".equals(flag)){
+            // 接收表单中的参数
+            t = new Tran();
+            t.setId(UUIDUtil.getUUID());
+            t.setMoney(money);
+            t.setExpectedDate(expectedDate);
+            t.setName(name);
+            t.setStage(stage);
+            t.setActivityId(activityId);
+            t.setCreateBy(createBy);
+            t.setCreateTime(DateTimeUtil.getSysTime());
+        }
+
+        /*
+            为业务层传递的参数：
+                1、必须传递的参数clueId，有了这个clueId之后我们才知道要转换哪条记录
+                2、必须传递的参数t，因为在线索的转换的过程中，有可能会临时创建一笔新的交易（业务层接收的t也可能为null）
+         */
+        boolean flag1 = clueService.convert(clueId,t,createBy);
+        mv.setViewName("/workbench/clue/index.jsp");
+        return mv;
+    }
 }

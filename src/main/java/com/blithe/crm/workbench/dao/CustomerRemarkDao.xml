@@ -4,8 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.blithe.crm.workbench.dao.CustomerRemarkDao">
-	
-  	
+    <insert id="save" >
+        insert into
+            crm.tbl_customer_remark(id,customerId,createTime,createBy,editFlag,noteContent)
+        values
+            (#{id},#{customerId},#{createTime},#{createBy},#{editFlag},#{noteContent})
+    </insert>
 </mapper>
 
 

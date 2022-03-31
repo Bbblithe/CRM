@@ -6,7 +6,7 @@
 <mapper namespace="com.blithe.crm.workbench.dao.ClueRemarkDao">
 	
     <select id="showRemarkList" resultType="ClueRemark">
-        select id,noteContent,createBy,createTime,editBy,editTime,editFlag from crm.tbl_clue_remark
+        select id,noteContent,createBy,createTime,editBy,editTime,editFlag,clueId from crm.tbl_clue_remark
         where clueId = #{id}
     </select>
 
