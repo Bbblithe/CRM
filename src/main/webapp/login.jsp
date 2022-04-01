@@ -93,8 +93,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
 </head>
 <body>
-	<div style="position: absolute; top: 0px; left: 0px; width: 58%;">
-		<img src="image/we.jpeg" style="width: 100%; height: 90%; position: relative; top: 50px;">
+	<div style="position: absolute; top: 0px; left: 0px; width: 60%;">
+		<img src="image/IMG_7114.JPG" style="width: 100%; height: 90%; position: relative; top: 50px;">
 	</div>
 	<div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
 		<div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">CRM &nbsp;<span style="font-size: 12px;">&copy;2022 小波</span></div>
