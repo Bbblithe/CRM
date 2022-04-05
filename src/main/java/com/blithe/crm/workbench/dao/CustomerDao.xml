@@ -17,6 +17,10 @@
                  #{contactSummary},#{nextContactTime},#{description},#{address}
                 )
     </insert>
+
+    <select id="getIdByName" resultType="String">
+        select id from crm.tbl_customer where name =#{name}
+    </select>
 </mapper>
 
 

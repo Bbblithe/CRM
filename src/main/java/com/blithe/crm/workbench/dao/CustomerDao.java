@@ -7,4 +7,6 @@ public interface CustomerDao {
     Customer getCustomerByName(String company);
 
     int save(Customer cus);
+
+    String getIdByName(String customerName);
 }
