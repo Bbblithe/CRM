@@ -58,8 +58,8 @@ public class TranController {
         tran.setName(name);
         tran.setStage(stage);
         tran.setType(type);
-        tran.setContactsId(contactsService.getIdByName(contactName));
-        tran.setCustomerId(customerService.getIdByName(customerName));
+        tran.setContactsId(contactName);
+        tran.setCustomerId(customerName);
         return tranService.pageList(pageNo,pageSize,tran);
     }
 }

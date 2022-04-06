@@ -8,5 +8,4 @@ public interface CustomerDao {
 
     int save(Customer cus);
 
-    String getIdByName(String customerName);
 }

@@ -17,60 +17,57 @@
     </insert>
 
     <select id="getTotal" resultType="Int">
-        select count(id) from crm.tbl_tran
+        select count(t.id)
+        from crm.tbl_tran t
+        join crm.tbl_customer c on t.customerId = c.id
+        join crm.tbl_user u on t.owner = u.id
+        join crm.tbl_contacts ct on t.contactsId = ct.id
         <where>
+            ct.id in (select id from crm.tbl_contacts where fullname like '%' #{contactsId} '%')
+            and c.id in (select id from crm.tbl_customer where name like '%' #{customerId} '%')
             <if test="owner!=null and owner!=''">
-                owner like '%' #{owner} '%'
+                and u.name like '%' #{owner} '%'
             </if>
             <if test="source!=null and source!=''">
-                and source like '%' #{source} '%'
+                and t.source like '%' #{source} '%'
             </if>
             <if test="stage!=null and stage!=''">
-                and stage like '%' #{stage} '%'
-            </if>
-            <if test="contactsId!=null and contactsId!=''">
-                and contactsId like '%' #{contactsId} '%'
+                and t.stage like '%' #{stage} '%'
             </if>
             <if test="type!=null and type!=''">
-                and type like '%' #{type} '%'
-            </if>
-            <if test="customerId!=null and customerId!=''">
-                and customerId like '%' #{customerId} '%'
+                and t.type like '%' #{type} '%'
             </if>
             <if test="name!=null and name!=''">
-                and name like '%' #{name} '%'
+                and t.name like '%' #{name} '%'
             </if>
         </where>
     </select>
 
     <select id="selectTranListByCondition" resultType="Tran">
         select t.id, u.name as owner, t.money, t.name, t.expectedDate, c.name as customerId, t.stage,
-               t.type, t.source, t.activityId, t.contactsId, t.createBy, t.createTime,
+               t.type, t.source, t.activityId, ct.fullname as contactsId, t.createBy, t.createTime,
                t.editBy, t.editTime, t.description, t.contactSummary, t.nextContactTime
         from crm.tbl_tran t
         join crm.tbl_customer c on t.customerId = c.id
         join crm.tbl_user u on t.owner = u.id
+        join crm.tbl_contacts ct on t.contactsId = ct.id
         <where>
+            ct.id in (select id from crm.tbl_contacts where fullname like '%' #{contactsId} '%')
+            and c.id in (select id from crm.tbl_customer where name like '%' #{customerId} '%')
             <if test="owner!=null and owner!=''">
-                owner like '%' #{owner} '%'
+                and u.name like '%' #{owner} '%'
             </if>
             <if test="source!=null and source!=''">
-                and source like '%' #{source} '%'
+                and t.source like '%' #{source} '%'
             </if>
             <if test="stage!=null and stage!=''">
-                and stage like '%' #{stage} '%'
-            </if>
-            <if test="contactsId!=null and contactsId!=''">
-                and contactsId like '%' #{contactsId} '%'
+                and t.stage like '%' #{stage} '%'
             </if>
             <if test="type!=null and type!=''">
-                and type like '%' #{type} '%'
-            </if>
-            <if test="customerId!=null and customerId!=''">
-                and customerId like '%' #{customerId} '%'
+                and t.type like '%' #{type} '%'
             </if>
             <if test="name!=null and name!=''">
-                and name like '%' #{name} '%'
+                and t.name like '%' #{name} '%'
             </if>
         </where>
     </select>

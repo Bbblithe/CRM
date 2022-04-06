@@ -25,6 +25,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	$(function(){
 		pageList(1,3)
+
+		$("#searchBtn").click(function (){
+			$("#hide-clueSource").val($.trim($("#search-clueSource").val()));
+			$("#hide-owner").val($.trim($("#search-owner").val()));
+			$("#hide-stage").val($.trim($("#search-stage").val()));
+			$("#hide-name").val($.trim($("#search-name").val()));
+			$("#hide-customerName").val($.trim($("#search-customerName").val()));
+			$("#hide-type").val($.trim($("#search-type").val()));
+			$("#hide-contactName").val($.trim($("#search-contactName").val()));
+
+			pageList($("#transactionPage").bs_pagination('getOption','currentPage'),
+					$("#transactionPage").bs_pagination('getOption','rowsPerPage'));
+		})
 	});
 
 	function pageList(pageNo,pageSize){
@@ -196,7 +209,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button type="button" id="searchBtn" class="btn btn-default">查询</button>
 				  
 				</form>
 			</div>
@@ -224,17 +237,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 					</thead>
 					<tbody id="transactionBody">
-
-                        <tr class="active">
-                            <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点-交易01</a></td>
-                            <td>动力节点</td>
-                            <td>谈判/复审</td>
-                            <td>新业务</td>
-                            <td>zhangsan</td>
-                            <td>广告</td>
-                            <td>李四</td>
-                        </tr>
 					</tbody>
 				</table>
 			</div>

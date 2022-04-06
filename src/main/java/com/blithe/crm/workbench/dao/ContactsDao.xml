@@ -13,9 +13,7 @@
                                           ,#{nextContactTime},#{address})
     </insert>
 
-    <select id="getIdByName" resultType="String">
-        select id from crm.tbl_contacts where fullname =#{name}
-    </select>
+
 </mapper>
 
 
