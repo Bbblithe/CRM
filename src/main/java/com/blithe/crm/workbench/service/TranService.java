@@ -11,4 +11,6 @@ import com.blithe.crm.workbench.domain.Tran;
 
 public interface TranService {
     PaginationVo<Tran> pageList(Integer pageNo, Integer pageSize, Tran tran);
+
+    boolean save(Tran t, String customerName);
 }

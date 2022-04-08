@@ -18,6 +18,10 @@
                 )
     </insert>
 
+    <select id="getCustomerName" resultType="String">
+        select name from crm.tbl_customer where name like '%' #{name} '%'
+    </select>
+
 </mapper>
 
 

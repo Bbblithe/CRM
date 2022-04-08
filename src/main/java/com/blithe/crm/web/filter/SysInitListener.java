@@ -6,8 +6,11 @@ import com.blithe.crm.setting.service.impl.DicServiceImpl;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -53,6 +56,28 @@ public class SysInitListener implements ServletContextListener {
       for(String key : keys){
          application.setAttribute(key,map.get(key));
       }
+      /*
+         处理Stage2Possibility.properties文件步骤：
+            解析该文件，将属性文件中的键值对关系处理成为java中的键值对关系
+            Map<String(阶段),String(可能性possibility)> pMap =
+            pMap.put("01资质审查",10)
+
+            pMap保存之后，放在服务器缓存中
+            application.setAttribute("pMap",pMap)
+       */
+
+      // 解析properties文件
+      ResourceBundle rb = ResourceBundle.getBundle("Stage2Possibility");
+      Map<String,String> pMap = new HashMap<>();
+      Enumeration<String> e = rb.getKeys();
+      while(e.hasMoreElements()){ // 迭代器，速度最快的。当项目数据量小的时候则不明显
+         // 阶段
+         String key = e.nextElement();
+         // 可能性
+         String value = rb.getString(key);
+         pMap.put(key,value);
+      }
+      application.setAttribute("pMap",pMap);
 
       ServletContextListener.super.contextInitialized(sce);
    }

@@ -1,13 +1,19 @@
 package com.blithe.crm.workbench.service.impl;
 
+import com.blithe.crm.exception.SaveException;
+import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.dao.CustomerDao;
 import com.blithe.crm.workbench.dao.TranDao;
 import com.blithe.crm.workbench.dao.TranHistoryDao;
+import com.blithe.crm.workbench.domain.Customer;
 import com.blithe.crm.workbench.domain.Tran;
+import com.blithe.crm.workbench.domain.TranHistory;
 import com.blithe.crm.workbench.service.TranService;
 import com.github.pagehelper.PageHelper;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +33,9 @@ public class TranServiceImpl implements TranService {
     @Resource
     private TranHistoryDao historyDao;
 
+    @Resource
+    private CustomerDao customerDao;
+
     @Override
     public PaginationVo<Tran> pageList(Integer pageNo, Integer pageSize, Tran tran) {
         PaginationVo<Tran> pv = new PaginationVo<>();
@@ -36,5 +45,53 @@ public class TranServiceImpl implements TranService {
         List<Tran> tranList = tranDao.selectTranListByCondition(tran);
         pv.setDataList(tranList);
         return pv;
+    }
+
+    @Override
+    @Transactional
+    public boolean save(Tran t, String customerName) {
+        /*
+            交易添加业务：
+                在做添加之前，参数t里面就少了一个项信息，就是客户的主键,cusomterId
+
+                先处理客户相关的需求：
+                    1）判断customerName，根据客户名称在客户表进行精确查询
+                        如果有，则取出id封装的t对象中。
+                        如果没有，则创建新的客户。
+         */
+        Customer customer = customerDao.getCustomerByName(customerName);
+        if(customer == null){
+            customer = new Customer();
+            customer.setId(UUIDUtil.getUUID());
+            customer.setName(customerName);
+            customer.setCreateTime(t.getCreateTime());
+            customer.setCreateBy(t.getCreateBy());
+            customer.setContactSummary(t.getContactSummary());
+            customer.setNextContactTime(t.getNextContactTime());
+            customer.setOwner(t.getOwner());
+            // 添加客户
+            if(customerDao.save(customer) != 1){
+                throw new SaveException("客户添加失败");
+            }
+        }
+
+        t.setCustomerId(customer.getId());
+
+        if(tranDao.save(t) != 1){
+            throw new SaveException("交易添加失败");
+        }
+        TranHistory th = new TranHistory();
+        th.setId(UUIDUtil.getUUID());
+        th.setTranId(t.getId());
+        th.setStage(t.getStage());
+        th.setMoney(t.getMoney());
+        th.setExpectedDate(t.getExpectedDate());
+        th.setCreateTime(t.getCreateTime());
+        th.setCreateBy(t.getCreateBy());
+
+        if(historyDao.save(th) != 1){
+            throw new SaveException("交易历史添加失败");
+        }
+        return true;
     }
 }
