@@ -7,5 +7,4 @@ package com.blithe.crm.workbench.service;
  */
 
 public interface CustomerService {
-    String getIdByName(String customerName);
 }

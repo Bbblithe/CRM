@@ -127,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		// 页面加载完毕后，需要触发一个方法
 		// 默认展开页表的第一页，没页展示三条记录
-		pageList(1,2)
+		pageList(1,5)
 
 		// 为查询按钮绑定事件，触发pageList方法
 		$("#searchBtn").click(function(){

@@ -44,5 +44,7 @@ public interface ActivityService {
 
     List<Activity> selectActivityByName(String aname);
 
+    List<Activity> getActivityListByName(String name);
+
     // Activity test(String id);
 }

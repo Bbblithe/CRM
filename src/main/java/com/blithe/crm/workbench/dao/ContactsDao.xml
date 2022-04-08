@@ -13,7 +13,14 @@
                                           ,#{nextContactTime},#{address})
     </insert>
 
-
+    <select id="getContactsListByName" resultType="Contacts">
+        select id,fullname,email,mphone from crm.tbl_contacts
+        <where>
+            <if test="name!=null and name!=''">
+                name like '%' #{name} '%'
+            </if>
+        </where>
+    </select>
 </mapper>
 
 

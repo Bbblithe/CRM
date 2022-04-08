@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			pickerPosition: "top-left"
 		});
 
-		pageList(1,2);
+		pageList(1,5);
 
 
 		// 为创建按钮绑定事件，打开添加操作的模态窗口

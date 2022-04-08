@@ -101,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	function saveValue(id){
 		$("#activity").val($("#"+id).html());
-		$("activityId").val(id);
+		$("#activityId").val(id);
 		$("#searchActivityModal").modal("hide");
 	}
 </script>

@@ -29,6 +29,12 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Resource
     private ActivityDao dao;
+
+    @Override
+    public List<Activity> getActivityListByName(String name) {
+        return dao.selectActivityByName(name);
+    }
+
     @Resource
     private ActivityRemarkDao remarkDao;
     @Resource

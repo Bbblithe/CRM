@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 	$(function(){
-		pageList(1,3)
+		pageList(1,5)
 
 		$("#searchBtn").click(function (){
 			$("#hide-clueSource").val($.trim($("#search-clueSource").val()));
@@ -38,11 +38,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			pageList($("#transactionPage").bs_pagination('getOption','currentPage'),
 					$("#transactionPage").bs_pagination('getOption','rowsPerPage'));
 		})
+
+		$("#selectAll").click(function(){
+			$("input[name=xz]").prop("checked",this.checked)
+		})
+		$("#transactionBody").on("click",$("input[name=xz]"),function (){
+			$("#selectAll").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
+		})
 	});
 
 	function pageList(pageNo,pageSize){
 
-		// $("#selectAll").prop("checked",false);
+		$("#selectAll").prop("checked",false);
 
 		$("#search-clueSource").val($.trim($("#hide-clueSource").val()));
 		$("#search-owner").val($.trim($("#hide-owner").val()));
@@ -226,7 +233,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
+							<td><input type="checkbox" id="selectAll"/></td>
 							<td>名称</td>
 							<td>客户名称</td>
 							<td>阶段</td>

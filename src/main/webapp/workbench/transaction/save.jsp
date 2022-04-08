@@ -37,9 +37,93 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				todayBtn: true,
 				pickerPosition: "top-left"
 			});
-		})
-	</script>
 
+			$("#aName").keydown(function (event){
+				if(event.keyCode == 13){
+					getActivity();
+					return false;
+				}
+			})
+
+			$("#cName").keydown(function (event){
+				if(event.keyCode == 13){
+					getContacts();
+					return false;
+				}
+			})
+
+			$("#connectABtn").click(function (){
+				getActivity()
+				$("#findMarketActivity").modal("show");
+			})
+
+			$("#connectCBtn").click(function (){
+				getContacts();
+				$("#findContacts").modal("show");
+			})
+		})
+
+		function getActivity(){
+			$.ajax({
+				url:"workbench/transaction/associateActivity.do",
+				data:{
+					"name":$.trim($("#aName").val())
+				},
+				type:"get",
+				dataType:"json",
+				success:function(result){
+					let html = ""
+					$.each(result,function (i,n){
+						html += '<tr>'
+						html += '	<td><input type="radio" name="activity" onclick="saveAValue(\''+n.id+'\')"/></td>'
+						html += '	<td id="'+n.id+'">'+n.name+'</td>'
+						html += '	<td>'+n.startDate+'</td>'
+						html += '	<td>'+n.endDate+'</td>'
+						html += '	<td>'+n.owner+'</td>'
+						html += '</tr>'
+					})
+
+					$("#activityList").html(html);
+				}
+			})
+		}
+
+		function getContacts(){
+			$.ajax({
+				url:"workbench/transaction/associateContacts.do",
+				data:{
+					"name":$.trim($("#cName").val())
+				},
+				type:"get",
+				dataType:"json",
+				success:function(result){
+					let html = ""
+					$.each(result,function (i,n){
+						html += '<tr>'
+						html += '	<td><input type="radio" onclick="saveCValue(\''+n.id+'\')" /></td>'
+						html += '	<td id="'+n.id+'">'+n.fullname+'</td>'
+						html += '	<td>'+n.email+'</td>'
+						html += '	<td>'+n.mphone+'</td>'
+						html += '</tr>'
+					})
+
+					$("#contactsList").html(html);
+				}
+			})
+		}
+
+		function saveAValue(id){
+			$("#create-activitySrc").val($("#"+id).html());
+			$("#activityId").val(id);
+			$("#findMarketActivity").modal("hide");
+		}
+
+		function saveCValue(id){
+			$("#create-contactsName").val($("#"+id).html());
+			$("#contactsId").val(id);
+			$("#findContacts").modal("hide");
+		}
+	</script>
 </head>
 <body>
 
@@ -57,11 +141,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 						<form class="form-inline" role="form">
 						  <div class="form-group has-feedback">
-						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
+						    <input type="text" class="form-control" id="aName" style="width: 300px;" placeholder="请输入市场活动名称，支持模糊查询">
 						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 						  </div>
 						</form>
 					</div>
+					<input type="hidden" id="activityId" name="activityId">
 					<table id="activityTable3" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
 						<thead>
 							<tr style="color: #B3B3B3;">
@@ -72,21 +157,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<td>所有者</td>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><input type="radio" name="activity"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
-							<tr>
-								<td><input type="radio" name="activity"/></td>
-								<td>发传单</td>
-								<td>2020-10-10</td>
-								<td>2020-10-20</td>
-								<td>zhangsan</td>
-							</tr>
+						<tbody id="activityList">
 						</tbody>
 					</table>
 				</div>
@@ -108,11 +179,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="btn-group" style="position: relative; top: 18%; left: 8px;">
 						<form class="form-inline" role="form">
 						  <div class="form-group has-feedback">
-						    <input type="text" class="form-control" style="width: 300px;" placeholder="请输入联系人名称，支持模糊查询">
+						    <input type="text" class="form-control" id="cName" style="width: 300px;" placeholder="请输入联系人名称，支持模糊查询">
 						    <span class="glyphicon glyphicon-search form-control-feedback"></span>
 						  </div>
 						</form>
 					</div>
+					<input type="hidden" id="contactsId">
 					<table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
 						<thead>
 							<tr style="color: #B3B3B3;">
@@ -122,19 +194,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<td>手机</td>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><input type="radio" name="activity"/></td>
-								<td>李四</td>
-								<td>lisi@bjpowernode.com</td>
-								<td>12345678901</td>
-							</tr>
-							<tr>
-								<td><input type="radio" name="activity"/></td>
-								<td>李四</td>
-								<td>lisi@bjpowernode.com</td>
-								<td>12345678901</td>
-							</tr>
+						<tbody id="contactsList">
 						</tbody>
 					</table>
 				</div>
@@ -220,14 +280,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</c:forEach>
 				</select>
 			</div>
-			<label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findMarketActivity"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" id="connectABtn"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
-				<input type="text" class="form-control" id="create-activitySrc">
+				<input type="text" readonly class="form-control" id="create-activitySrc">
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" id="connectCBtn"><span class="glyphicon glyphicon-search"></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<input type="text" class="form-control" id="create-contactsName">
 			</div>

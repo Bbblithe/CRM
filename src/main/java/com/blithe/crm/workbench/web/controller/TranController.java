@@ -3,9 +3,11 @@ package com.blithe.crm.workbench.web.controller;
 import com.blithe.crm.setting.domain.User;
 import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.domain.Activity;
+import com.blithe.crm.workbench.domain.Contacts;
 import com.blithe.crm.workbench.domain.Tran;
+import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ContactsService;
-import com.blithe.crm.workbench.service.CustomerService;
 import com.blithe.crm.workbench.service.TranService;
 
 import org.springframework.stereotype.Controller;
@@ -34,10 +36,10 @@ public class TranController {
     private UserService userService;
 
     @Resource
-    private ContactsService contactsService;
+    private ActivityService activityService;
 
     @Resource
-    private CustomerService customerService;
+    private ContactsService contactsService;
 
     @RequestMapping("add.do")
     public ModelAndView getUser(){
@@ -61,5 +63,18 @@ public class TranController {
         tran.setContactsId(contactName);
         tran.setCustomerId(customerName);
         return tranService.pageList(pageNo,pageSize,tran);
+    }
+
+    @RequestMapping("associateActivity.do")
+    @ResponseBody
+    public List<Activity> getActivityListByName(String name){
+        return activityService.getActivityListByName(name);
+    }
+
+
+    @RequestMapping("associateContacts.do")
+    @ResponseBody
+    public List<Contacts> getContactsListByName(String name){
+        return contactsService.getContactsListByName(name);
     }
 }

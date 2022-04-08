@@ -17,9 +17,4 @@ import javax.annotation.Resource;
 public class CustomerServiceImpl implements CustomerService {
     @Resource
     private CustomerDao customerDao;
-
-    @Override
-    public String getIdByName(String customerName) {
-        return customerDao.getIdByName(customerName);
-    }
 }
