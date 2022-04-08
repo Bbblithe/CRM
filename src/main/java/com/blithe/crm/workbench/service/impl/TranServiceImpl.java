@@ -94,4 +94,9 @@ public class TranServiceImpl implements TranService {
         }
         return true;
     }
+
+    @Override
+    public Tran detail(String id) {
+        return tranDao.detail(id);
+    }
 }

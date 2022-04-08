@@ -11,4 +11,6 @@ public interface TranDao {
     int getTotal(Tran tran);
 
     List<Tran> selectTranListByCondition(Tran tran);
+
+    Tran detail(String id);
 }

@@ -13,4 +13,6 @@ public interface TranService {
     PaginationVo<Tran> pageList(Integer pageNo, Integer pageSize, Tran tran);
 
     boolean save(Tran t, String customerName);
+
+    Tran detail(String id);
 }

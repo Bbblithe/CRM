@@ -72,6 +72,25 @@
         </where>
         order by t.createTime desc
     </select>
+
+    <select id="detail" resultType="Tran">
+        select
+            tran.id, user.name as owner, tran.money, tran.name, tran.expectedDate, cus.name as customerId,
+               tran.stage, tran.type, tran.source, act.name as activityId, con.fullname as contactsId, tran.createBy,
+               tran.createTime, tran.editBy, tran.editTime, tran.description, tran.contactSummary,
+               tran.nextContactTime
+        from crm.tbl_tran tran
+        join crm.tbl_user user
+        on tran.owner = user.id
+        join crm.tbl_customer cus
+        on tran.customerId = cus.id
+        left join crm.tbl_activity act
+        on tran.activityId = act.id
+        left join crm.tbl_contacts con
+        on tran.contactsId = con.id
+
+        where tran.id = #{id}
+    </select>
 </mapper>
 
 

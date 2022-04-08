@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -122,6 +124,19 @@ public class TranController {
             // 如果添加交易成功，跳转到列表页
             mv.setViewName("redirect:/workbench/transaction/index.jsp");
         }
+        return mv;
+    }
+
+    @RequestMapping("detail.do")
+    public ModelAndView getDetail(String id,HttpServletRequest request){
+        ModelAndView mv =  new ModelAndView();
+        Tran t = tranService.detail(id);
+        String stage = t.getStage();
+        ServletContext application = request.getServletContext();
+        Map<String,String> pMap = (Map<String, String>) application.getAttribute("pMap");
+        mv.addObject("possibility",pMap.get(stage));
+        mv.addObject("t",t);
+        mv.setViewName("/workbench/transaction/detail.jsp");
         return mv;
     }
 }
