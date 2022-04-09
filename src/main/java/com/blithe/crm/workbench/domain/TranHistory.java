@@ -9,7 +9,18 @@ public class TranHistory {
 	private String createTime;
 	private String createBy;
 	private String tranId;
-	
+
+	// 用于前端好接收单独的一个可能性
+	private String possibility;
+
+	public String getPossibility() {
+		return possibility;
+	}
+
+	public void setPossibility(String possibility) {
+		this.possibility = possibility;
+	}
+
 	public String getId() {
 		return id;
 	}

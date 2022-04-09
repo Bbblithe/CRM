@@ -1,7 +1,10 @@
 package com.blithe.crm.workbench.service.impl;
 
+import com.blithe.crm.exception.ChangeException;
 import com.blithe.crm.exception.SaveException;
+import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.UUIDUtil;
+import com.blithe.crm.vo.ChartsVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.CustomerDao;
 import com.blithe.crm.workbench.dao.TranDao;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -45,6 +49,11 @@ public class TranServiceImpl implements TranService {
         List<Tran> tranList = tranDao.selectTranListByCondition(tran);
         pv.setDataList(tranList);
         return pv;
+    }
+
+    @Override
+    public List<TranHistory> getHistoryById(String tranId) {
+        return historyDao.getHistoryListById(tranId);
     }
 
     @Override
@@ -98,5 +107,34 @@ public class TranServiceImpl implements TranService {
     @Override
     public Tran detail(String id) {
         return tranDao.detail(id);
+    }
+
+    @Override
+    @Transactional
+    public boolean changeStage(Tran t) {
+        boolean flag = tranDao.changeStage(t) == 1;
+        if(!flag){
+            throw new ChangeException("交易改变阶段失败！");
+        }
+        TranHistory th = new TranHistory();
+        th.setId(UUIDUtil.getUUID());
+        th.setStage(t.getStage());
+        th.setTranId(t.getId());
+        th.setMoney(t.getMoney());
+        th.setCreateBy(t.getEditBy());
+        th.setCreateTime(DateTimeUtil.getSysTime());
+        th.setExpectedDate(t.getExpectedDate());
+        if(historyDao.save(th) != 1){
+            throw new ChangeException("交易历史创建失败！");
+        }
+        return flag;
+    }
+
+    @Override
+    public ChartsVo<Map<String, String>> getCharts() {
+        ChartsVo<Map<String,String>> vo = new ChartsVo();
+        vo.setTotal(tranDao.getTotalNum());
+        vo.setDataList(tranDao.getCharts());
+        return vo;
     }
 }

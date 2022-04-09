@@ -1,14 +1,25 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2021/2/1
-  Time: 12:03
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    /*
+        需求：
+            根据交易表中的不同阶段的数量进行一个统计，最终形成一个漏斗图（倒三角形）
+
+            例如：
+                01资质审查  10条
+                02需求分析  85条
+                。。。
+                07成交    100条
+            sql :
+                select
+                    stage count(*)
+                from
+                    crm.tbl_tran
+                group by
+                    stage
+     */
 %>
 <html>
 <head>
@@ -19,6 +30,7 @@
     <script src="jquery/jquery-1.11.1-min.js"></script>
     <script>
         $(function (){
+            // 页面加载完毕之后，绘制统计图表
             getCharts();
         })
 
@@ -30,10 +42,10 @@
                 success:function (data){
                     // 基于准备好的dom，初始化echarts实例
                     // 指定图表的配置项和数据
-                    var option = {
+                    let option = {
                         title: {
                             text: '交易漏斗图',
-                            subtext: '纯属虚构'
+                            subtext: '统计交易阶段数量的漏斗图'
                         },
 
                         series: [
@@ -88,10 +100,7 @@
     <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
     <div id="main" style="width: 600px;height:400px;"></div>
 <script>
-    var myChart = echarts.init(document.getElementById('main'));
-
-
-
+    let myChart = echarts.init(document.getElementById('main'));
 </script>
 </body>
 </html>

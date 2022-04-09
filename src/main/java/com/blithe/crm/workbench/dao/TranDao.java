@@ -3,6 +3,7 @@ package com.blithe.crm.workbench.dao;
 import com.blithe.crm.workbench.domain.Tran;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TranDao {
 
@@ -13,4 +14,10 @@ public interface TranDao {
     List<Tran> selectTranListByCondition(Tran tran);
 
     Tran detail(String id);
+
+    int changeStage(Tran t);
+
+    List<Map<String, String>> getCharts();
+
+    int getTotalNum();
 }

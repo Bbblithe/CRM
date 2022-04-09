@@ -1,7 +1,12 @@
 package com.blithe.crm.workbench.service;
 
+import com.blithe.crm.vo.ChartsVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Tran;
+import com.blithe.crm.workbench.domain.TranHistory;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Author:  blithe.xwj
@@ -15,4 +20,10 @@ public interface TranService {
     boolean save(Tran t, String customerName);
 
     Tran detail(String id);
+
+    List<TranHistory> getHistoryById(String tranId);
+
+    boolean changeStage(Tran t);
+
+    ChartsVo<Map<String, String>> getCharts();
 }

@@ -4,10 +4,12 @@ import com.blithe.crm.setting.domain.User;
 import com.blithe.crm.setting.service.UserService;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.UUIDUtil;
+import com.blithe.crm.vo.ChartsVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Contacts;
 import com.blithe.crm.workbench.domain.Tran;
+import com.blithe.crm.workbench.domain.TranHistory;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ContactsService;
 import com.blithe.crm.workbench.service.CustomerService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,5 +141,46 @@ public class TranController {
         mv.addObject("t",t);
         mv.setViewName("/workbench/transaction/detail.jsp");
         return mv;
+    }
+
+    @RequestMapping("getHistoryListById.do")
+    @ResponseBody
+    public List<TranHistory> getHistoryById(String tranId,HttpServletRequest request){
+        List<TranHistory> tranHistories = tranService.getHistoryById(tranId);
+        ServletContext application = request.getServletContext();
+        Map<String,String> pMap = (Map<String, String>) application.getAttribute("pMap");
+        for(TranHistory th : tranHistories){
+            String stage = th.getStage();
+            th.setPossibility(pMap.get(stage));
+        }
+        return tranHistories;
+    }
+
+    @RequestMapping("changeStage.do")
+    @ResponseBody
+    public Map<String,Object> changeStage(String id,String stage,String money,String expectedDate,HttpServletRequest request){
+        String editBy = ((User)request.getSession().getAttribute("user")).getName();
+        String editTime = DateTimeUtil.getSysTime();
+        Map<String,String> pMap = (Map<String, String>) request.getServletContext().getAttribute("pMap");
+        Tran t = new Tran();
+        t.setId(id);
+        t.setStage(stage);
+        t.setMoney(money);
+        t.setExpectedDate(expectedDate);
+        t.setEditBy(editBy);
+        t.setEditTime(editTime);
+
+        Map<String,Object> map = new HashMap<>();
+        boolean flag = tranService.changeStage(t);
+        map.put("success",flag);
+        map.put("t",t);
+        map.put("possibility",pMap.get(stage));
+        return map;
+    }
+
+    @RequestMapping("getCharts.do")
+    @ResponseBody
+    public ChartsVo<Map<String,String>> getCharts(){
+        return tranService.getCharts();
     }
 }

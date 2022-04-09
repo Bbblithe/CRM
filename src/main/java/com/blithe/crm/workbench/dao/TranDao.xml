@@ -16,6 +16,10 @@
                                                                                  )
     </insert>
 
+    <select id="getTotalNum" resultType="Int">
+        select count(id) from crm.tbl_tran
+    </select>
+
     <select id="getTotal" resultType="Int">
         select count(t.id)
         from crm.tbl_tran t
@@ -90,6 +94,20 @@
         on tran.contactsId = con.id
 
         where tran.id = #{id}
+    </select>
+
+    <update id="changeStage">
+        update crm.tbl_tran set stage=#{stage},editBy = #{editBy},editTime = #{editTime}
+        where id = #{id}
+    </update>
+
+    <select id="getCharts" resultType="map">
+        select
+            count(id) value, stage name
+        from
+            crm.tbl_tran
+        group by
+            stage
     </select>
 </mapper>
 
