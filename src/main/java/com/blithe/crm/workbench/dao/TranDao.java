@@ -20,4 +20,8 @@ public interface TranDao {
     List<Map<String, String>> getCharts();
 
     int getTotalNum();
+
+    Tran getInformation(String id);
+
+    int update(Tran t);
 }

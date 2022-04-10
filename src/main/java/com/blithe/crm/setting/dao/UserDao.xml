@@ -41,4 +41,12 @@
                lockState,deptno,allowIps,createTime,createBy,
                editTime,editBy from crm.tbl_user where id!=(select owner from crm.tbl_clue where crm.tbl_clue.id = #{id})
     </select>
+
+    <select id="selectOtherUsersById" resultType="User">
+        select name,id from crm.tbl_user where id!=#{id}
+    </select>
+
+    <select id="getUserById" resultType="User">
+        select name,id from crm.tbl_user where id=#{id}
+    </select>
 </mapper>

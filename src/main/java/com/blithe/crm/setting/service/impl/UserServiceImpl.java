@@ -58,4 +58,14 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserList() {
         return dao.selectUserList();
     }
+
+    @Override
+    public List<User> getOtherUserList(String owner) {
+        return dao.selectOtherUsersById(owner);
+    }
+
+    @Override
+    public User getUserById(String owner) {
+        return dao.getUserById(owner);
+    }
 }

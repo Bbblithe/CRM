@@ -68,39 +68,13 @@ public class TranServiceImpl implements TranService {
                         如果有，则取出id封装的t对象中。
                         如果没有，则创建新的客户。
          */
-        Customer customer = customerDao.getCustomerByName(customerName);
-        if(customer == null){
-            customer = new Customer();
-            customer.setId(UUIDUtil.getUUID());
-            customer.setName(customerName);
-            customer.setCreateTime(t.getCreateTime());
-            customer.setCreateBy(t.getCreateBy());
-            customer.setContactSummary(t.getContactSummary());
-            customer.setNextContactTime(t.getNextContactTime());
-            customer.setOwner(t.getOwner());
-            // 添加客户
-            if(customerDao.save(customer) != 1){
-                throw new SaveException("客户添加失败");
-            }
-        }
 
-        t.setCustomerId(customer.getId());
+        t.setCustomerId(addCustomer(t,customerName).getId());
 
         if(tranDao.save(t) != 1){
             throw new SaveException("交易添加失败");
         }
-        TranHistory th = new TranHistory();
-        th.setId(UUIDUtil.getUUID());
-        th.setTranId(t.getId());
-        th.setStage(t.getStage());
-        th.setMoney(t.getMoney());
-        th.setExpectedDate(t.getExpectedDate());
-        th.setCreateTime(t.getCreateTime());
-        th.setCreateBy(t.getCreateBy());
-
-        if(historyDao.save(th) != 1){
-            throw new SaveException("交易历史添加失败");
-        }
+        addTranHistory(t);
         return true;
     }
 
@@ -136,5 +110,56 @@ public class TranServiceImpl implements TranService {
         vo.setTotal(tranDao.getTotalNum());
         vo.setDataList(tranDao.getCharts());
         return vo;
+    }
+
+    @Override
+    public Tran edit(String id) {
+        return tranDao.getInformation(id);
+    }
+
+    @Override
+    @Transactional
+    public boolean update(Tran t, String customerName) {
+        t.setCustomerId(addCustomer(t,customerName).getId());
+        if(tranDao.update(t) != 1){
+            throw new SaveException("交易添加失败");
+        }
+        addTranHistory(t);
+        return true;
+    }
+
+
+    private Customer addCustomer(Tran t,String customerName){
+        Customer customer = customerDao.getCustomerByName(customerName);
+        if(customer == null){
+            customer = new Customer();
+            customer.setId(UUIDUtil.getUUID());
+            customer.setName(customerName);
+            customer.setCreateTime(t.getCreateTime());
+            customer.setCreateBy(t.getCreateBy());
+            customer.setContactSummary(t.getContactSummary());
+            customer.setNextContactTime(t.getNextContactTime());
+            customer.setOwner(t.getOwner());
+            // 添加客户
+            if(customerDao.save(customer) != 1){
+                throw new SaveException("客户添加失败");
+            }
+        }
+        return customer;
+    }
+
+    private void addTranHistory(Tran t){
+        TranHistory th = new TranHistory();
+        th.setId(UUIDUtil.getUUID());
+        th.setTranId(t.getId());
+        th.setStage(t.getStage());
+        th.setMoney(t.getMoney());
+        th.setExpectedDate(t.getExpectedDate());
+        th.setCreateTime(DateTimeUtil.getSysTime());
+        th.setCreateBy(t.getEditBy());
+
+        if(historyDao.save(th) != 1){
+            throw new SaveException("交易历史添加失败");
+        }
     }
 }

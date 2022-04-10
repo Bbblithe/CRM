@@ -109,6 +109,37 @@
         group by
             stage
     </select>
+
+    <select id="getInformation" resultType="tran">
+        select
+            tran.id,tran.owner,tran.money, tran.name, tran.expectedDate, cus.name as customerId,
+            tran.stage, tran.type, tran.source, act.name as activityId, con.fullname as contactsId, tran.createBy,
+            tran.createTime, tran.editBy, tran.editTime, tran.description, tran.contactSummary,
+            tran.nextContactTime
+        from crm.tbl_tran tran
+                 join crm.tbl_customer cus
+                      on tran.customerId = cus.id
+                 left join crm.tbl_activity act
+                           on tran.activityId = act.id
+                 left join crm.tbl_contacts con
+                           on tran.contactsId = con.id
+
+        where tran.id = #{id}
+    </select>
+    
+    <update id="update">
+        update crm.tbl_tran set owner=#{owner}, money=#{money}, name=#{name}, expectedDate=#{expectedDate}, customerId=#{customerId},
+                                stage=#{stage}, type=#{type}, source=#{source},
+                                <if test="activityId!='' and activityId!=null">
+                                    activityId=#{activityId},
+                                </if>
+                                <if test="contactsId!='' and contactsId!=null">
+                                contactsId=#{contactsId},
+                                </if>
+                                editBy=#{editBy}, editTime=#{editTime}, description=#{description},contactSummary=#{contactSummary},
+                                nextContactTime=#{nextContactTime}
+        where id=#{id}
+    </update>
 </mapper>
 
 

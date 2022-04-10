@@ -45,6 +45,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#transactionBody").on("click",$("input[name=xz]"),function (){
 			$("#selectAll").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
 		})
+
+		$("#modifyBtn").click(function(){
+			let $xz = $("input[name=xz]:checked");
+			if($xz.length == 0){
+				alert("请选择需要修改的记录");
+			}else if($xz.length > 1){
+				alert("请选择一条交易记录进行修改！");
+			}else{
+				window.location.href = "workbench/transaction/edit.do?id=" + $xz.val();
+			}
+		})
 	});
 
 	function pageList(pageNo,pageSize){
@@ -223,7 +234,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" onclick="window.location.href='workbench/transaction/add.do';"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" onclick="window.location.href='edit.html';"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" class="btn btn-default" id="modifyBtn"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				

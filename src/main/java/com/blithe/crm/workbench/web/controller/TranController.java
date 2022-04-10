@@ -130,6 +130,36 @@ public class TranController {
         return mv;
     }
 
+    @RequestMapping("update.do")
+    public ModelAndView update(String id,String name, String money, String expectedDate, String stage, String source, String owner,
+                             String customerName, String type, String activityId, String contactsId, String description,
+                             String contactSummary, String nextContactTime, HttpServletRequest request){
+        ModelAndView mv = new ModelAndView();
+        String editBy = ((User)request.getSession().getAttribute("user")).getName();
+        String editTime = DateTimeUtil.getSysTime();
+        Tran t = new Tran();
+        t.setEditTime(editTime);
+        t.setEditBy(editBy);
+        t.setId(id);
+        t.setOwner(owner);
+        t.setMoney(money);
+        t.setName(name);
+        t.setExpectedDate(expectedDate);
+        t.setStage(stage);
+        t.setType(type);
+        t.setActivityId(activityId);
+        t.setSource(source);
+        t.setContactsId(contactsId);
+        t.setDescription(description);
+        t.setContactSummary(contactSummary);
+        t.setNextContactTime(nextContactTime);
+
+        tranService.update(t,customerName);
+        mv.setViewName("/workbench/transaction/index.jsp");
+        return mv;
+    }
+
+
     @RequestMapping("detail.do")
     public ModelAndView getDetail(String id,HttpServletRequest request){
         ModelAndView mv =  new ModelAndView();
@@ -182,5 +212,18 @@ public class TranController {
     @ResponseBody
     public ChartsVo<Map<String,String>> getCharts(){
         return tranService.getCharts();
+    }
+
+    @RequestMapping("edit.do")
+    public ModelAndView modify(String id){
+        ModelAndView mv = new ModelAndView();
+        Tran t = tranService.edit(id);
+        List<User> userList = userService.getOtherUserList(t.getOwner());
+        User user = userService.getUserById(t.getOwner());
+        mv.addObject("t",t);
+        mv.addObject("userList",userList);
+        mv.addObject("user",user);
+        mv.setViewName("/workbench/transaction/edit.jsp");
+        return mv;
     }
 }

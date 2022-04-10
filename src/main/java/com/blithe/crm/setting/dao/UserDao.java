@@ -25,5 +25,9 @@ public interface UserDao {
 
     User selectUserByC(String id);
 
+    List<User> selectOtherUsersById(String owner);
+
+    User getUserById(String owner);
+
     // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
 }

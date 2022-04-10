@@ -26,4 +26,8 @@ public interface TranService {
     boolean changeStage(Tran t);
 
     ChartsVo<Map<String, String>> getCharts();
+
+    Tran edit(String id);
+
+    boolean update(Tran t, String customerName);
 }
