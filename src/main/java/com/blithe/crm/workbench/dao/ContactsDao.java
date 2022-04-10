@@ -9,4 +9,10 @@ public interface ContactsDao {
     int save(Contacts con);
 
     List<Contacts> getContactsListByName(String name);
+
+    int getTotal(Contacts c);
+
+    List<Contacts> selectContactsListByCondition(Contacts c);
+
+    int delete(String id);
 }

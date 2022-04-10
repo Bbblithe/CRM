@@ -21,6 +21,58 @@
             </if>
         </where>
     </select>
+
+    <select id="getTotal" resultType="Int">
+        select count(ct.id)
+        from crm.tbl_contacts ct
+        join crm.tbl_customer c on ct.customerId = c.id
+        join crm.tbl_user u on ct.owner = u.id
+        <where>
+            c.id in (select id from crm.tbl_customer where name like '%' #{customerId} '%')
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="source!=null and source!=''">
+                and ct.source like '%' #{source} '%'
+            </if>
+            <if test="fullname!=null and fullname!=''">
+                and ct.fullname like '%' #{fullname} '%'
+            </if>
+            <if test="birth!=null and birth!=''">
+                and ct.birth like '%' #{birth} '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectContactsListByCondition" resultType="contacts">
+        select ct.birth,ct.id,ct.fullname,ct.source,c.name as customerId,u.name as owner
+        from crm.tbl_contacts ct
+        join crm.tbl_customer c on ct.customerId = c.id
+        join crm.tbl_user u on ct.owner = u.id
+        <where>
+            c.id in (select id from crm.tbl_customer where name like '%' #{customerId} '%')
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="source!=null and source!=''">
+                and ct.source like '%' #{source} '%'
+            </if>
+            <if test="fullname!=null and fullname!=''">
+                and ct.fullname like '%' #{fullname} '%'
+            </if>
+            <if test="birth!=null and birth!=''">
+                and ct.birth like '%' #{birth} '%'
+            </if>
+        </where>
+        order by ct.createTime
+        <if test="editTime!=null and editTime!=''">
+            and ct.editTime
+        </if>
+    </select>
+
+    <delete id="delete">
+        delete from crm.tbl_contacts where id=#{id}
+    </delete>
 </mapper>
 
 

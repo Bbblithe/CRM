@@ -1,5 +1,6 @@
 package com.blithe.crm.workbench.service;
 
+import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Contacts;
 
 import java.util.List;
@@ -12,4 +13,8 @@ import java.util.List;
 
 public interface ContactsService {
     List<Contacts> getContactsListByName(String name);
+
+    PaginationVo<Contacts> pageList(Integer pageNo, Integer pageSize, Contacts c);
+
+    boolean delete(String[] ids);
 }
