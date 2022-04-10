@@ -226,4 +226,11 @@ public class TranController {
         mv.setViewName("/workbench/transaction/edit.jsp");
         return mv;
     }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public boolean deleteTranAndHistoryTran(HttpServletRequest request){
+        String[] ids = request.getParameterValues("id");
+        return tranService.delete(ids);
+    }
 }

@@ -1,6 +1,7 @@
 package com.blithe.crm.workbench.service.impl;
 
 import com.blithe.crm.exception.ChangeException;
+import com.blithe.crm.exception.DeleteException;
 import com.blithe.crm.exception.SaveException;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.UUIDUtil;
@@ -125,6 +126,21 @@ public class TranServiceImpl implements TranService {
             throw new SaveException("交易添加失败");
         }
         addTranHistory(t);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean delete(String[] ids) {
+        int length = ids.length;
+        int count = 0;
+        for(int i = 0 ; i < length ; i ++){
+            historyDao.delete(ids[i]);
+            count += tranDao.delete(ids[i]);
+        }
+        if(count != length){
+            throw new DeleteException("删除失败");
+        }
         return true;
     }
 

@@ -56,6 +56,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				window.location.href = "workbench/transaction/edit.do?id=" + $xz.val();
 			}
 		})
+
+		$("#deleteBtn").click(function(){
+			let $xz = $("input[name=xz]:checked");
+
+			if($xz.length == 0){
+				alert("请选择需要删除的线索")
+			}else{
+				if(confirm("确认要删除以下"+$xz.length+"条线索吗")){
+					let param ="";
+					$.each($xz,function(i,n){
+						param += "id=" + n.value;
+						// 如果不是最后一个元素，需要在后面追减一个&
+						if(i < $xz.length - 1){
+							param+="&";
+						}
+					})
+
+					// alert(param);
+					$.ajax({
+						url:"workbench/transaction/delete.do",
+						data:param,
+						type:"post",
+						dataType:"json",
+						success:function(result){
+							if(result){
+								pageList($("#transactionPage").bs_pagination('getOption','currentPage'),
+										$("#transactionPage").bs_pagination('getOption','rowsPerPage'));
+							}else{
+								alert("删除失败");
+							}
+						}
+					})
+
+				}
+			}
+		})
 	});
 
 	function pageList(pageNo,pageSize){
@@ -235,7 +271,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" onclick="window.location.href='workbench/transaction/add.do';"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" id="modifyBtn"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 				

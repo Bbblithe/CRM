@@ -15,6 +15,10 @@
     <select id="getHistoryListById" resultType="TranHistory">
         select id, stage, money, expectedDate, createTime, createBy, tranId from crm.tbl_tran_history where tranId = #{id}
     </select>
+
+    <delete id="delete">
+        delete from crm.tbl_tran_history where tranId = #{id}
+    </delete>
 </mapper>
 
 

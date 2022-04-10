@@ -24,4 +24,6 @@ public interface TranDao {
     Tran getInformation(String id);
 
     int update(Tran t);
+
+    int delete(String id);
 }

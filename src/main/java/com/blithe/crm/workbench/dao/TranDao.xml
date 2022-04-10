@@ -140,6 +140,10 @@
                                 nextContactTime=#{nextContactTime}
         where id=#{id}
     </update>
+
+    <delete id="delete">
+        delete from crm.tbl_tran where id=#{id}
+    </delete>
 </mapper>
 
 

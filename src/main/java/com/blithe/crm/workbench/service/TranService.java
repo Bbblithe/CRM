@@ -30,4 +30,6 @@ public interface TranService {
     Tran edit(String id);
 
     boolean update(Tran t, String customerName);
+
+    boolean delete(String[] ids);
 }
