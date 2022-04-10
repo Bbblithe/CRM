@@ -17,4 +17,6 @@ public interface ContactsService {
     PaginationVo<Contacts> pageList(Integer pageNo, Integer pageSize, Contacts c);
 
     boolean delete(String[] ids);
+
+    boolean save(Contacts contacts);
 }
