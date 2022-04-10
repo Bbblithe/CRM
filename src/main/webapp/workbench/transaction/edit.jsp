@@ -143,7 +143,7 @@
 					let html = ""
 					$.each(result,function (i,n){
 						html += '<tr>'
-						html += '	<td><input type="radio" onclick="saveCValue(\''+n.id+'\')" /></td>'
+						html += '	<td><input type="radio" name="contacts" onclick="saveCValue(\''+n.id+'\')" /></td>'
 						html += '	<td id="'+n.id+'">'+n.fullname+'</td>'
 						html += '	<td>'+n.email+'</td>'
 						html += '	<td>'+n.mphone+'</td>'
@@ -248,7 +248,7 @@
 		<h3>更新交易</h3>
 	  	<div style="position: relative; top: -40px; left: 70%;">
 			<button type="button" class="btn btn-primary" id="updateBtn">更新</button>
-			<button type="button" class="btn btn-default">取消</button>
+			<button type="button" class="btn btn-default" onclick="javascript:history.back(-1);">取消</button>
 		</div>
 		<hr style="position: relative; top: -40px;">
 	</div>

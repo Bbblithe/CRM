@@ -4,6 +4,7 @@ import com.blithe.crm.vo.ChartsVo;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.domain.Tran;
 import com.blithe.crm.workbench.domain.TranHistory;
+import com.blithe.crm.workbench.domain.TranRemark;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +33,12 @@ public interface TranService {
     boolean update(Tran t, String customerName);
 
     boolean delete(String[] ids);
+
+    List<TranRemark> showRemarkList(String id);
+
+    boolean saveRemark(TranRemark tr);
+
+    boolean updateRemark(TranRemark tr);
+
+    boolean deleteRemark(String id);
 }

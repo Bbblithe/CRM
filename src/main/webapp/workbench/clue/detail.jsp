@@ -59,14 +59,13 @@
 			$("#remarkDiv").css("height","90px");
 			cancelAndSaveBtnDefault = true;
 		});
-		
-		$(".remarkDiv").mouseover(function(){
-			$(this).children("div").children("div").show();
-		});
-		
-		$(".remarkDiv").mouseout(function(){
-			$(this).children("div").children("div").hide();
-		});
+
+		$("#remarkList").on("mouseover",".myHref",function(){
+			$(this).children("span").css("color","red");
+		})
+		$("#remarkList").on("mouseout",".myHref",function(){
+			$(this).children("span").css("color","#E6E6E6");
+		})
 		$("#remarkList").on("mouseover",".remarkDiv",function(){
 			$(this).children("div").children("div").show();
 		})
@@ -257,9 +256,9 @@
 						html += '			<h5 id="e'+result.cr.id+'">'+result.cr.noteContent+'</h5>'
 						html += '			<font color="gray">线索</font> <font color="gray">-</font> <b>'+"${clue.fullname}${clue.appellation}"+'-'+"${clue.company}"+'</b> <small style="color: gray;" id="s'+result.cr.id+'"> '+result.cr.createTime+'由'+result.cr.createBy+'</small>'
 						html += '			<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
-						html += '				<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+result.cr.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
+						html += '				<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+result.cr.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>';
 						html += '                &nbsp;&nbsp;&nbsp;&nbsp;';
-						html += '                <a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+result.cr.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
+						html += '                <a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+result.cr.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>';
 						html += '            </div>'
 						html += '		</div>'
 						html += '</div>'
@@ -376,9 +375,9 @@
 					html += '			<h5 id="e'+n.id+'">'+n.noteContent+'</h5>'
 					html += '			<font color="gray">线索</font> <font color="gray">-</font> <b>'+"${clue.fullname}${clue.appellation}"+'-'+"${clue.company}"+'</b> <small style="color: gray;" id="s'+n.id+'"> '+(n.editFlag==0?n.createTime:n.editTime)+'由'+(n.editFlag==0?n.createBy:n.editBy)+'</small>'
 					html += '			<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">'
-					html += '				<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>';
+					html += '				<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #e6e6e6;"></span></a>';
 					html += '                &nbsp;&nbsp;&nbsp;&nbsp;';
-					html += '                <a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>';
+					html += '                <a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #e6e6e6;"></span></a>';
 					html += '            </div>'
 					html += '		</div>'
 					html += '</div>'

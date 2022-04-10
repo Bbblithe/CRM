@@ -10,6 +10,7 @@ import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Contacts;
 import com.blithe.crm.workbench.domain.Tran;
 import com.blithe.crm.workbench.domain.TranHistory;
+import com.blithe.crm.workbench.domain.TranRemark;
 import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ContactsService;
 import com.blithe.crm.workbench.service.CustomerService;
@@ -232,5 +233,48 @@ public class TranController {
     public boolean deleteTranAndHistoryTran(HttpServletRequest request){
         String[] ids = request.getParameterValues("id");
         return tranService.delete(ids);
+    }
+
+    @RequestMapping("showRemarkList.do")
+    @ResponseBody
+    public List<TranRemark> showRemark(String id){
+        return tranService.showRemarkList(id);
+    }
+
+    @RequestMapping("saveRemark.do")
+    @ResponseBody
+    public Map<String,Object> saveRemark(String noteContent,String tranId,HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        TranRemark tr = new TranRemark();
+        tr.setId(UUIDUtil.getUUID());
+        tr.setCreateTime(DateTimeUtil.getSysTime());
+        tr.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        tr.setTranId(tranId);
+        tr.setNoteContent(noteContent);
+        tr.setEditFlag("0");
+        map.put("success",tranService.saveRemark(tr));
+        map.put("tr",tr);
+        return map;
+    }
+
+    @RequestMapping("updateRemark.do")
+    @ResponseBody
+    public Map<String,Object> updateRemark(String id,String noteContent,HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        TranRemark tr = new TranRemark();
+        tr.setId(id);
+        tr.setEditFlag("1");
+        tr.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+        tr.setEditTime(DateTimeUtil.getSysTime());
+        tr.setNoteContent(noteContent);
+        map.put("success",tranService.updateRemark(tr));
+        map.put("tr",tr);
+        return map;
+    }
+
+    @RequestMapping("deleteRemark.do")
+    @ResponseBody
+    public boolean deleteRemark(String id){
+        return tranService.deleteRemark(id);
     }
 }

@@ -10,9 +10,11 @@ import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.CustomerDao;
 import com.blithe.crm.workbench.dao.TranDao;
 import com.blithe.crm.workbench.dao.TranHistoryDao;
+import com.blithe.crm.workbench.dao.TranRemarkDao;
 import com.blithe.crm.workbench.domain.Customer;
 import com.blithe.crm.workbench.domain.Tran;
 import com.blithe.crm.workbench.domain.TranHistory;
+import com.blithe.crm.workbench.domain.TranRemark;
 import com.blithe.crm.workbench.service.TranService;
 import com.github.pagehelper.PageHelper;
 
@@ -40,6 +42,9 @@ public class TranServiceImpl implements TranService {
 
     @Resource
     private CustomerDao customerDao;
+
+    @Resource
+    private TranRemarkDao remarkDao;
 
     @Override
     public PaginationVo<Tran> pageList(Integer pageNo, Integer pageSize, Tran tran) {
@@ -144,6 +149,26 @@ public class TranServiceImpl implements TranService {
         return true;
     }
 
+    @Override
+    public List<TranRemark> showRemarkList(String id) {
+        return remarkDao.getListById(id);
+    }
+
+    @Override
+    public boolean saveRemark(TranRemark tr) {
+        return remarkDao.save(tr) == 1;
+    }
+
+    @Override
+    public boolean updateRemark(TranRemark tr) {
+        return remarkDao.update(tr) == 1;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        return remarkDao.delete(id) == 1;
+    }
+
 
     private Customer addCustomer(Tran t,String customerName){
         Customer customer = customerDao.getCustomerByName(customerName);
@@ -172,7 +197,7 @@ public class TranServiceImpl implements TranService {
         th.setMoney(t.getMoney());
         th.setExpectedDate(t.getExpectedDate());
         th.setCreateTime(DateTimeUtil.getSysTime());
-        th.setCreateBy(t.getEditBy());
+        th.setCreateBy((t.getEditBy()!=""&&t.getEditBy()!=null?t.getEditBy():t.getCreateBy()));
 
         if(historyDao.save(th) != 1){
             throw new SaveException("交易历史添加失败");

@@ -17,7 +17,7 @@
         select id,fullname,email,mphone from crm.tbl_contacts
         <where>
             <if test="name!=null and name!=''">
-                name like '%' #{name} '%'
+                fullname like '%' #{name} '%'
             </if>
         </where>
     </select>

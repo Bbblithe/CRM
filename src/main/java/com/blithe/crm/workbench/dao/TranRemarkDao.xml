@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blithe.crm.workbench.dao.TranRemarkDao">
+    <select id="getListById" resultType="TranRemark">
+        select id, noteContent, createBy, createTime, editBy, editTime, editFlag, tranId
+        from crm.tbl_tran_remark where tranId=#{id}
+    </select>
+
+    <insert id="save">
+        insert into crm.tbl_tran_remark(id, noteContent, createBy, createTime,  editFlag, tranId) VALUES(
+                #{id},#{noteContent},#{createBy},#{createTime},#{editFlag},#{tranId})
+    </insert>
+
+    <update id="update">
+        update crm.tbl_tran_remark set noteContent=#{noteContent},editFlag=#{editFlag},editTime=#{editTime},
+                                       editBy=#{editBy} where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from crm.tbl_tran_remark where id=#{id}
+    </delete>
+</mapper>
