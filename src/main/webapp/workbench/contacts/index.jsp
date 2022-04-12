@@ -26,7 +26,115 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 
 	$(function(){
+		$(".time").datetimepicker({
+			minView: "month",
+			language:  'zh-CN',
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
+
+		$("#editBtn").click(function (){
+			let $xz = $("input[name=xz]:checked");
+			if($xz.length == 0){
+				alert("请选择你需要修改的线索");
+			}else if ($xz.length != 1){
+				alert("仅能修改1一条线索")
+			}else{
+				$("#hidden-id").val($xz.val());
+
+				$.ajax({
+					url:"workbench/contacts/getUserListAndContacts.do",
+					data:{
+						id:$xz.val()
+					},
+					type:"get",
+					dataType:"json",
+					success:function(result){
+						/*
+							result:
+								result:{"user":{"name":"张三","id":"324532bsddfg",...},
+									"userList":["zhangsan":{},"lisi":{},...],"Clue":{"id":"","mphoe","",...}],
+									"contact":{"id":"asdfasasdf235423","owner":"张三",...}
+								}
+						 */
+						let html = "<option selected='selected' value='"+result.user.id+"'>" + result.user.name + "</option>"
+						$.each(result.userList,function (i,n){
+							html += "<option value='"+n.id+"'>" + n.name + "</option>"
+						})
+
+						$("#edit-owner").html(html);
+
+						let contacts = result.contacts;
+						$("#edit-fullname").val(contacts.fullname)
+						$("#edit-appellation").val(contacts.appellation)
+						$("#edit-owner").val(contacts.owner)
+						$("#edit-job").val(contacts.job)
+						$("#edit-email").val(contacts.email)
+						$("#edit-mphone").val(contacts.mphone)
+                        $("#edit-birth").val(contacts.birth)
+						$("#edit-source").val(contacts.source)
+                        $("#edit-customerName").val(contacts.customerId)
+						$("#edit-description").val(contacts.description)
+						$("#edit-contactSummary").val(contacts.contactSummary)
+						$("#edit-nextContactTime").val(contacts.nextContactTime)
+						$("#edit-address").val(contacts.address)
+						$("#editContactsModal").modal("show");
+					}
+				})
+			}
+		})
+
+		$("#updateBtn").click(function (){
+			let id = $("#hidden-id").val();
+			$.ajax({
+				url:"workbench/contacts/update.do",
+				data:{
+					"id":id,
+					"fullname":$.trim($("#edit-fullname").val()),
+					"appellation":$.trim($("#edit-appellation").val()),
+					"owner":$.trim($("#edit-owner").val()),
+					"job":$.trim($("#edit-job").val()),
+					"email":$.trim($("#edit-email").val()),
+					"source":$.trim($("#edit-source").val()),
+					"description":$.trim($("#edit-description").val()),
+					"customerName":$.trim($("#edit-customerName").val()),
+					"contactSummary":$.trim($("#edit-contactSummary").val()),
+					"nextContactTime":$.trim($("#edit-nextContactTime").val()),
+					"address":$.trim($("#edit-address").val()),
+					"mphone":$.trim($("#edit-mphone").val()),
+					"birth":$.trim($("#edit-birth").val())
+				},
+				type:"post",
+				dataType:"json",
+				success:function(result){
+					if(result){
+						pageList($("#contactsPage").bs_pagination('getOption','currentPage'),
+								$("#contactsPage").bs_pagination('getOption','rowsPerPage'));
+						$("#editContactsModal").modal("hide");
+					}else{
+						alert("更新失败!");
+					}
+				}
+			})
+		})
+
 		$("#create-customerName").typeahead({
+			source: function (query, process) {
+				$.get(
+						"workbench/transaction/getCustomerName.do",
+						{ "name" : query },
+						function (data) {
+							//alert(data);
+							process(data);
+						},
+						"json"
+				);
+			},
+			delay: 100
+		});
+		$("#edit-customerName").typeahead({
 			source: function (query, process) {
 				$.get(
 						"workbench/transaction/getCustomerName.do",
@@ -305,7 +413,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<label for="create-birth" class="col-sm-2 control-label">生日</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-birth">
+								<input type="text" class="form-control time" id="create-birth">
 							</div>
 						</div>
 						
@@ -335,7 +443,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="form-group">
 								<label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 								<div class="col-sm-10" style="width: 300px;">
-									<input type="text" class="form-control" id="create-nextContactTime">
+									<input type="text" class="form-control time" id="create-nextContactTime">
 								</div>
 							</div>
 						</div>
@@ -362,6 +470,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<!-- 修改联系人的模态窗口 -->
+    <input type="hidden" id="hidden-id">
 	<div class="modal fade" id="editContactsModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">
@@ -375,50 +484,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<form class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="edit-contactsOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="edit-contactsOwner">
-								  <option selected>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="edit-owner">
 								</select>
 							</div>
-							<label for="edit-clueSource1" class="col-sm-2 control-label">来源</label>
+							<label for="edit-source" class="col-sm-2 control-label">来源</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="edit-clueSource1">
-								  <option></option>
-								  <option selected>广告</option>
-								  <option>推销电话</option>
-								  <option>员工介绍</option>
-								  <option>外部介绍</option>
-								  <option>在线商场</option>
-								  <option>合作伙伴</option>
-								  <option>公开媒介</option>
-								  <option>销售邮件</option>
-								  <option>合作伙伴研讨会</option>
-								  <option>内部研讨会</option>
-								  <option>交易会</option>
-								  <option>web下载</option>
-								  <option>web调研</option>
-								  <option>聊天</option>
+								<select class="form-control" id="edit-source">
+                                    <c:forEach items="${source}" var="s">
+                                        <option value="${s.value}">${s.text}</option>
+                                    </c:forEach>
 								</select>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-surname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="edit-fullname" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-surname" value="李四">
+								<input type="text" class="form-control" id="edit-fullname" value="李四">
 							</div>
-							<label for="edit-call" class="col-sm-2 control-label">称呼</label>
+							<label for="edit-appellation" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="edit-call">
-								  <option></option>
-								  <option selected>先生</option>
-								  <option>夫人</option>
-								  <option>女士</option>
-								  <option>博士</option>
-								  <option>教授</option>
+								<select class="form-control" id="edit-appellation">
+                                    <c:forEach items="${appellation}" var="a">
+                                        <option value="${a.value}">${a.text}</option>
+                                    </c:forEach>
 								</select>
 							</div>
 						</div>
@@ -441,7 +532,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<label for="edit-birth" class="col-sm-2 control-label">生日</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="edit-birth">
+								<input type="text" class="form-control time" id="edit-birth">
 							</div>
 						</div>
 						
@@ -453,9 +544,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						
 						<div class="form-group">
-							<label for="edit-describe" class="col-sm-2 control-label">描述</label>
+							<label for="edit-description" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="edit-describe">这是一条线索的描述信息</textarea>
+								<textarea class="form-control" rows="3" id="edit-description">这是一条线索的描述信息</textarea>
 							</div>
 						</div>
 						
@@ -471,7 +562,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="form-group">
 								<label for="edit-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
 								<div class="col-sm-10" style="width: 300px;">
-									<input type="text" class="form-control" id="edit-nextContactTime">
+									<input type="text" class="form-control time" id="edit-nextContactTime">
 								</div>
 							</div>
 						</div>
@@ -491,7 +582,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+					<button type="button" class="btn btn-primary" id="updateBtn">更新</button>
 				</div>
 			</div>
 		</div>
@@ -564,8 +655,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" id="createBtn" class="btn btn-primary" data-toggle="modal" data-target="#createContactsModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editContactsModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" id="createBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" id="editBtn" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" id="deleteBtn" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				

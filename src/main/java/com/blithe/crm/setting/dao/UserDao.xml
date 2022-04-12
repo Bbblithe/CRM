@@ -49,4 +49,16 @@
     <select id="getUserById" resultType="User">
         select name,id from crm.tbl_user where id=#{id}
     </select>
+
+    <select id="selectUserByContacts" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id=(select owner from crm.tbl_contacts where tbl_contacts.id = #{id})
+    </select>
+
+    <select id="selectOtherUserByContacts" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id!=(select owner from crm.tbl_contacts where tbl_contacts.id = #{id})
+    </select>
 </mapper>

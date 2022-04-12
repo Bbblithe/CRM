@@ -121,8 +121,9 @@ public class TranController {
         t.setDescription(description);
         t.setContactSummary(contactSummary);
         t.setNextContactTime(nextContactTime);
+        t.setCustomerId(customerName);
 
-        boolean flag = tranService.save(t,customerName);
+        boolean flag = tranService.save(t);
 
         if(flag){
             // 如果添加交易成功，跳转到列表页
@@ -154,8 +155,9 @@ public class TranController {
         t.setDescription(description);
         t.setContactSummary(contactSummary);
         t.setNextContactTime(nextContactTime);
+        t.setCustomerId(customerName);
 
-        tranService.update(t,customerName);
+        tranService.update(t);
         mv.setViewName("/workbench/transaction/index.jsp");
         return mv;
     }

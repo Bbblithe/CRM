@@ -1,12 +1,16 @@
 package com.blithe.crm.workbench.service.impl;
 
+import com.blithe.crm.exception.ChangeException;
 import com.blithe.crm.exception.DeleteException;
 import com.blithe.crm.exception.SaveException;
+import com.blithe.crm.setting.dao.UserDao;
 import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
 import com.blithe.crm.workbench.dao.ContactsDao;
+import com.blithe.crm.workbench.dao.ContactsRemarkDao;
 import com.blithe.crm.workbench.dao.CustomerDao;
 import com.blithe.crm.workbench.domain.Contacts;
+import com.blithe.crm.workbench.domain.ContactsRemark;
 import com.blithe.crm.workbench.domain.Customer;
 import com.blithe.crm.workbench.service.ContactsService;
 import com.github.pagehelper.PageHelper;
@@ -14,7 +18,9 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -31,6 +37,12 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Resource
     private CustomerDao customerDao;
+
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    private ContactsRemarkDao contactsRemarkDao;
 
     @Override
     public List<Contacts> getContactsListByName(String name) {
@@ -59,7 +71,64 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
+    @Transactional
     public boolean save(Contacts contacts) {
+        contacts.setCustomerId(addCustomer(contacts).getId());
+        contactsDao.save(contacts);
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndContacts(String id) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("user",userDao.selectUserByContacts(id));
+        map.put("userList",userDao.selectOtherUserByContacts(id));
+        map.put("contacts",contactsDao.selectContactsById(id));
+        return  map;
+    }
+
+    @Override
+    @Transactional
+    public boolean update(Contacts con) {
+        con.setCustomerId(addCustomer(con).getId());
+        if(contactsDao.update(con) !=1){
+            throw new ChangeException("更新联系人出错了!");
+        }
+        return true;
+    }
+
+    @Override
+    public Contacts getDetail(String id) {
+        return contactsDao.getContactsById(id);
+    }
+
+    @Override
+    public List<ContactsRemark> showRemarkList(String id) {
+        return contactsRemarkDao.selectListById(id);
+    }
+
+    @Override
+    public Map<String, Object> saveRemark(ContactsRemark cr) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("cr",cr);
+        map.put("success",contactsRemarkDao.save(cr));
+        return map;
+    }
+
+    @Override
+    public boolean deleteRemark(String id) {
+        return contactsRemarkDao.delete(id) == 1;
+    }
+
+    @Override
+    public Map<String, Object> updateRemark(ContactsRemark cr) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("cr",cr);
+        map.put("success",contactsRemarkDao.update(cr) == 1);
+        return map;
+    }
+
+    private Customer addCustomer(Contacts contacts){
         Customer customer = customerDao.getCustomerByName(contacts.getCustomerId());
         if(customer == null){
             customer = new Customer();
@@ -75,8 +144,6 @@ public class ContactsServiceImpl implements ContactsService {
                 throw new SaveException("客户添加失败");
             }
         }
-        contacts.setCustomerId(customer.getId());
-        contactsDao.save(contacts);
-        return true;
+        return customer;
     }
 }

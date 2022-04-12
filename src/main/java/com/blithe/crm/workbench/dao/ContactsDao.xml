@@ -74,6 +74,34 @@
     <delete id="delete">
         delete from crm.tbl_contacts where id=#{id}
     </delete>
+
+    <select id="selectContactsById" resultType="Contacts">
+        select con.id, con.owner,con.source,c.name as customerId, con.fullname, con.appellation, con.email, con.mphone,
+               con.job, con.birth,con.createBy, con.createTime, con.editBy, con.editTime, con.description,
+               con.contactSummary, con.nextContactTime,con.address from tbl_contacts con
+        join tbl_customer c
+            on con.customerId = c.id
+        where con.id=#{id}
+    </select>
+
+    <update id="update">
+        update crm.tbl_contacts set fullname = #{fullname},appellation=#{appellation},owner=#{owner},
+                                    job=#{job},email=#{email},source=#{source},description=#{description},
+                                    customerId=#{customerId},contactSummary=#{contactSummary},nextContactTime
+                                    =#{nextContactTime},address=#{address},mphone=#{mphone},birth=#{birth},
+                                    editBy=#{editBy},editTime=#{editTime}
+
+        where id=#{id}
+    </update>
+
+    <select id="getContactsById" resultType="Contacts">
+        select con.id, u.name as owner, con.source, c.name as customerId, con.fullname, con.appellation, con.email, con.mphone, con.job, con.birth, con.createBy,
+               con.createTime, con.editBy, con.editTime, con.description, con.contactSummary, con.nextContactTime, con.address
+        from tbl_contacts con
+        join tbl_user u on con.owner = u.id
+        join tbl_customer c on con.customerId = c.id
+        where con.id=#{id}
+    </select>
 </mapper>
 
 

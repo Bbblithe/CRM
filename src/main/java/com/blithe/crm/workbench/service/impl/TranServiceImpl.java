@@ -64,7 +64,7 @@ public class TranServiceImpl implements TranService {
 
     @Override
     @Transactional
-    public boolean save(Tran t, String customerName) {
+    public boolean save(Tran t) {
         /*
             交易添加业务：
                 在做添加之前，参数t里面就少了一个项信息，就是客户的主键,cusomterId
@@ -75,7 +75,7 @@ public class TranServiceImpl implements TranService {
                         如果没有，则创建新的客户。
          */
 
-        t.setCustomerId(addCustomer(t,customerName).getId());
+        t.setCustomerId(addCustomer(t).getId());
 
         if(tranDao.save(t) != 1){
             throw new SaveException("交易添加失败");
@@ -125,8 +125,8 @@ public class TranServiceImpl implements TranService {
 
     @Override
     @Transactional
-    public boolean update(Tran t, String customerName) {
-        t.setCustomerId(addCustomer(t,customerName).getId());
+    public boolean update(Tran t) {
+        t.setCustomerId(addCustomer(t).getId());
         if(tranDao.update(t) != 1){
             throw new SaveException("交易添加失败");
         }
@@ -170,12 +170,12 @@ public class TranServiceImpl implements TranService {
     }
 
 
-    private Customer addCustomer(Tran t,String customerName){
-        Customer customer = customerDao.getCustomerByName(customerName);
+    private Customer addCustomer(Tran t){
+        Customer customer = customerDao.getCustomerByName(t.getCustomerId());
         if(customer == null){
             customer = new Customer();
             customer.setId(UUIDUtil.getUUID());
-            customer.setName(customerName);
+            customer.setName(t.getCustomerId());
             customer.setCreateTime(t.getCreateTime());
             customer.setCreateBy(t.getCreateBy());
             customer.setContactSummary(t.getContactSummary());

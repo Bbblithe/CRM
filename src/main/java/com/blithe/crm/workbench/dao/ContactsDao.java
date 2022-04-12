@@ -15,4 +15,10 @@ public interface ContactsDao {
     List<Contacts> selectContactsListByCondition(Contacts c);
 
     int delete(String id);
+
+    Contacts selectContactsById(String id);
+
+    int update(Contacts con);
+
+    Contacts getContactsById(String id);
 }

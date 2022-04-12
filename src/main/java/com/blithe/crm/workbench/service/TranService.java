@@ -18,7 +18,7 @@ import java.util.Map;
 public interface TranService {
     PaginationVo<Tran> pageList(Integer pageNo, Integer pageSize, Tran tran);
 
-    boolean save(Tran t, String customerName);
+    boolean save(Tran t);
 
     Tran detail(String id);
 
@@ -30,7 +30,7 @@ public interface TranService {
 
     Tran edit(String id);
 
-    boolean update(Tran t, String customerName);
+    boolean update(Tran t);
 
     boolean delete(String[] ids);
 

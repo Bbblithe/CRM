@@ -29,5 +29,9 @@ public interface UserDao {
 
     User getUserById(String owner);
 
+    User selectUserByContacts(String id);
+
+    List<User> selectOtherUserByContacts(String id);
+
     // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
 }

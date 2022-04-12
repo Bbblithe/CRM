@@ -11,6 +11,18 @@
         values
             (#{id},#{contactsId},#{createTime},#{createBy},#{editFlag},#{noteContent})
     </insert>
+
+    <select id="selectListById" resultType="ContactsRemark">
+        select id, noteContent, createBy, createTime, editBy, editTime, editFlag, contactsId from tbl_contacts_remark where contactsId=#{id}
+    </select>
+
+    <delete id="delete">
+        delete from tbl_contacts_remark where id=#{id}
+    </delete>
+
+    <update id="update">
+        update tbl_contacts_remark set editTime=#{editTime},editBy=#{editBy},editFlag=#{editFlag},noteContent=#{noteContent} where id=#{id}
+    </update>
 </mapper>
 
 
