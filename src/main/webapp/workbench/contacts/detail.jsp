@@ -88,7 +88,7 @@
 			let id = $("#remarkId").val();
 			// 执行备注更新操作
 			$.ajax({
-				url:"workbench/transaction/updateRemark.do",
+				url:"workbench/contacts/updateRemark.do",
 				data:{
 					"noteContent":$.trim($("#noteContent").val()),
 					"id":id
