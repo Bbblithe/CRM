@@ -76,6 +76,31 @@ public class ContactsController {
       return contactsService.save(contacts);
    }
 
+   @RequestMapping("update.do")
+   @ResponseBody
+   public boolean update(String id, String fullname, String appellation, String owner, String job,
+                         String email, String source, String description, String customerName,HttpServletRequest request,
+                         String contactSummary, String nextContactTime, String address, String mphone, String birth){
+      Contacts con = new Contacts();
+      con.setCustomerId(customerName);
+      con.setMphone(mphone);
+      con.setAddress(address);
+      con.setNextContactTime(nextContactTime);
+      con.setBirth(birth);
+      con.setDescription(description);
+      con.setId(id);
+      con.setFullname(fullname);
+      con.setAppellation(appellation);
+      con.setOwner(owner);
+      con.setJob(job);
+      con.setEmail(email);
+      con.setSource(source);
+      con.setContactSummary(contactSummary);
+      con.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+      con.setEditTime(DateTimeUtil.getSysTime());
+      return contactsService.update(con);
+   }
+
    @RequestMapping("detail.do")
    public ModelAndView showDetail(String id){
       ModelAndView mv = new ModelAndView();
@@ -119,5 +144,12 @@ public class ContactsController {
       cr.setNoteContent(noteContent);
       cr.setEditFlag("1");
       return contactsService.updateRemark(cr);
+   }
+
+   @RequestMapping("getUserListAndContacts.do")
+   @ResponseBody
+   public Map<String,Object> getUserListAndContacts(String id){
+      Map<String,Object> map =  contactsService.getUserListAndContacts(id);
+      return map;
    }
 }

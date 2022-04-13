@@ -571,9 +571,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                         <div style="position: relative;top: 20px;">
                             <div class="form-group">
-                                <label for="edit-address2" class="col-sm-2 control-label">详细地址</label>
+                                <label for="edit-address" class="col-sm-2 control-label">详细地址</label>
                                 <div class="col-sm-10" style="width: 81%;">
-                                    <textarea class="form-control" rows="1" id="edit-address2">北京大兴区大族企业湾</textarea>
+                                    <textarea class="form-control" rows="1" id="edit-address"></textarea>
                                 </div>
                             </div>
                         </div>
