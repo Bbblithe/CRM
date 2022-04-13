@@ -6,10 +6,12 @@ import com.blithe.crm.exception.SaveException;
 import com.blithe.crm.setting.dao.UserDao;
 import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.dao.ContactsActivityRelationDao;
 import com.blithe.crm.workbench.dao.ContactsDao;
 import com.blithe.crm.workbench.dao.ContactsRemarkDao;
 import com.blithe.crm.workbench.dao.CustomerDao;
 import com.blithe.crm.workbench.domain.Contacts;
+import com.blithe.crm.workbench.domain.ContactsActivityRelation;
 import com.blithe.crm.workbench.domain.ContactsRemark;
 import com.blithe.crm.workbench.domain.Customer;
 import com.blithe.crm.workbench.service.ContactsService;
@@ -43,6 +45,9 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Resource
     private ContactsRemarkDao contactsRemarkDao;
+
+    @Resource
+    private ContactsActivityRelationDao contactsActivityRelationDao;
 
     @Override
     public List<Contacts> getContactsListByName(String name) {
@@ -126,6 +131,26 @@ public class ContactsServiceImpl implements ContactsService {
         map.put("cr",cr);
         map.put("success",contactsRemarkDao.update(cr) == 1);
         return map;
+    }
+
+    @Override
+    public boolean unband(String id, String conId) {
+        return contactsActivityRelationDao.unband(id,conId) == 1;
+    }
+
+    @Override
+    public boolean bund(String contactsId, String[] ids) {
+        for(String id:ids){
+            ContactsActivityRelation car = new ContactsActivityRelation();
+            car.setId(UUIDUtil.getUUID());
+            car.setContactsId(contactsId);
+            car.setActivityId(id);
+
+            if(contactsActivityRelationDao.bund(car)!=1){
+                throw new SaveException("插入关联活动失败！");
+            }
+        }
+        return true;
     }
 
     private Customer addCustomer(Contacts contacts){

@@ -45,7 +45,6 @@ public class ActivityServiceImpl implements ActivityService {
     //     return dao.test(id);
     // }
 
-
     @Override
     public boolean save(Activity user) {
         // 添加dao逻辑，应当根据结果抛出异常，没成功就抛出异常
@@ -147,6 +146,16 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<Activity> selectActivityByNameAndNotAssociateByClueId(String name,String clueId) {
         return dao.selectActivityByNameAndNotAssociateByClueId(name,clueId);
+    }
+
+    @Override
+    public List<Activity> selectActivityByNameAndNotAssociateByContactsId(String id, String name) {
+        return dao.selectActivityByNameAndNotAssociateByContactsId(id,name);
+    }
+
+    @Override
+    public List<Activity> selectActivityByIdAndAssociate(String id) {
+        return dao.selectActivityByIdAndAssociate(id);
     }
 
     @Override

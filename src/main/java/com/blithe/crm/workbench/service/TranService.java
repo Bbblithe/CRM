@@ -41,4 +41,6 @@ public interface TranService {
     boolean updateRemark(TranRemark tr);
 
     boolean deleteRemark(String id);
+
+    List<Tran> getTranList();
 }

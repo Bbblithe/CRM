@@ -35,4 +35,8 @@ public interface ContactsService {
     boolean deleteRemark(String id);
 
     Map<String, Object> updateRemark(ContactsRemark cr);
+
+    boolean unband(String id, String conId);
+
+    boolean bund(String contactsId, String[] ids);
 }

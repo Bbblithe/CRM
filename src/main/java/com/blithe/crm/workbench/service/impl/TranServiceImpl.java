@@ -63,6 +63,11 @@ public class TranServiceImpl implements TranService {
     }
 
     @Override
+    public List<Tran> getTranList() {
+        return tranDao.getTranList();
+    }
+
+    @Override
     @Transactional
     public boolean save(Tran t) {
         /*

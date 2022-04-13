@@ -8,6 +8,14 @@
         insert into crm.tbl_contacts_activity_relation(id, contactsId, activityId)
         values (#{id},#{contactsId},#{activityId})
     </insert>
+
+    <delete id="unband">
+        delete from tbl_contacts_activity_relation where activityId=#{id} and contactsId=#{conId}
+    </delete>
+
+    <insert id="bund">
+        insert into tbl_contacts_activity_relation(id, contactsId, activityId) VALUES (#{id},#{contactsId},#{activityId})
+    </insert>
 </mapper>
 
 

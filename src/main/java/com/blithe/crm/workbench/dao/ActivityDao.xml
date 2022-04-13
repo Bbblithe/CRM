@@ -128,6 +128,35 @@
         </where>
     </select>
 
+    <select id="selectActivityByIdAndAssociate" resultType="Activity">
+        select
+        a.id,a.name,a.startDate,a.endDate,u.name as owner
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner=u.id
+        <where>
+            a.id in(
+            select activityId from crm.tbl_contacts_activity_relation where contactsId=#{contactsId}
+            )
+        </where>
+    </select>
+
+    <select id="selectActivityByNameAndNotAssociateByContactsId" resultType="Activity">
+        select
+        a.id,a.name,a.startDate,a.endDate,u.name as owner
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner=u.id
+        <where>
+            a.id not in(
+                select activityId from crm.tbl_contacts_activity_relation where contactsId=#{contactsId}
+            )
+            <if test="name!=null and name!=''">
+                and a.name like '%' #{name} '%'
+            </if>
+        </where>
+    </select>
+
     <select id="selectActivityByName" resultType="Activity">
         select a.id,a.name,a.startDate,a.endDate,u.name as owner
         from crm.tbl_activity a

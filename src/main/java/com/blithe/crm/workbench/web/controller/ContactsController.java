@@ -4,9 +4,13 @@ import com.blithe.crm.setting.domain.User;
 import com.blithe.crm.utils.DateTimeUtil;
 import com.blithe.crm.utils.UUIDUtil;
 import com.blithe.crm.vo.PaginationVo;
+import com.blithe.crm.workbench.domain.Activity;
 import com.blithe.crm.workbench.domain.Contacts;
 import com.blithe.crm.workbench.domain.ContactsRemark;
+import com.blithe.crm.workbench.domain.Tran;
+import com.blithe.crm.workbench.service.ActivityService;
 import com.blithe.crm.workbench.service.ContactsService;
+import com.blithe.crm.workbench.service.TranService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,6 +35,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ContactsController {
    @Resource
    private ContactsService contactsService;
+
+   @Resource
+   private TranService tranService;
+
+   @Resource
+   private ActivityService activityService;
 
    @RequestMapping("pageList.do")
    @ResponseBody
@@ -152,4 +163,42 @@ public class ContactsController {
       Map<String,Object> map =  contactsService.getUserListAndContacts(id);
       return map;
    }
+
+
+   @RequestMapping("getTransactionList.do")
+   @ResponseBody
+   public List<Tran> getTransactionList(HttpServletRequest request){
+      List<Tran> ts = tranService.getTranList();
+      Map<String,String> pMap = (Map<String,String>)request.getServletContext().getAttribute("pMap");
+      for(Tran t : ts){
+         t.setPossibility(pMap.get(t.getStage()));
+      }
+      return ts;
+   }
+
+   @RequestMapping("getActivityAssociateById.do")
+   @ResponseBody
+   public List<Activity> getActivityNotAssociate(String id){
+      return activityService.selectActivityByIdAndAssociate(id);
+   }
+
+   @RequestMapping("relieve.do")
+   @ResponseBody
+   public boolean relieveRelation(String id,String conId){
+      return contactsService.unband(id,conId);
+   }
+
+   @RequestMapping("getActivityNotAssociateByIdAndName.do")
+   @ResponseBody
+   public List<Activity> getActivityNotAssociateByName(String id,String name){
+      return activityService.selectActivityByNameAndNotAssociateByContactsId(id,name);
+   }
+
+   @RequestMapping("bund.do")
+   @ResponseBody
+   public boolean bundActivity(String contactsId,HttpServletRequest request){
+      String ids[] = request.getParameterValues("id");
+      return contactsService.bund(contactsId,ids);
+   }
+
 }

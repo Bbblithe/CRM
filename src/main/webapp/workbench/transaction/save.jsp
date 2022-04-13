@@ -37,6 +37,7 @@
 		}
 
 		$(function (){
+			$("#path").val("${path}");
 			$("#create-customerName").typeahead({
 				source: function (query, process) {
 					$.get(
@@ -181,8 +182,7 @@
 	</script>
 </head>
 <body>
-
-	<!-- 查找市场活动 -->	
+	<!-- 查找市场活动 -->
 	<div class="modal fade" id="findMarketActivity" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 80%;">
 			<div class="modal-content">
@@ -266,6 +266,8 @@
 	</div>
 	<form action="workbench/transaction/save.do" id="tranForm" method="post" class="form-horizontal" role="form" style="position: relative; top: -30px;">
 		<div class="form-group">
+			<input type="hidden" name="path" id="path">
+
 			<label for="create-transactionOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<select class="form-control" id="create-transactionOwner" name="owner">

@@ -144,6 +144,11 @@
     <delete id="delete">
         delete from crm.tbl_tran where id=#{id}
     </delete>
+
+    <select id="getTranList" resultType="Tran">
+        select t.id,t.money,c.name as customerId,t.name,t.stage,t.expectedDate,t.type from tbl_tran t
+        join tbl_customer c on t.customerId = c.id
+    </select>
 </mapper>
 
 

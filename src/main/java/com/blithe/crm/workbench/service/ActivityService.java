@@ -46,5 +46,9 @@ public interface ActivityService {
 
     List<Activity> getActivityListByName(String name);
 
+    List<Activity> selectActivityByNameAndNotAssociateByContactsId(String id, String name);
+
+    List<Activity> selectActivityByIdAndAssociate(String id);
+
     // Activity test(String id);
 }

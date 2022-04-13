@@ -26,4 +26,6 @@ public interface TranDao {
     int update(Tran t);
 
     int delete(String id);
+
+    List<Tran> getTranList();
 }

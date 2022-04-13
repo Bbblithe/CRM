@@ -55,10 +55,11 @@ public class TranController {
     private CustomerService customerService;
 
     @RequestMapping("add.do")
-    public ModelAndView getUser(){
+    public ModelAndView getUser(String id){
         ModelAndView mv = new ModelAndView();
         List<User> userList = userService.getUserList();
         mv.addObject("userList",userList);
+        mv.addObject("path",id);
         mv.setViewName("/workbench/transaction/save.jsp");
         return mv;
     }
@@ -100,7 +101,7 @@ public class TranController {
     @RequestMapping("save.do")
     public ModelAndView save(String name, String money, String expectedDate, String stage, String source, String owner,
                              String customerName, String type, String activityId, String contactsId, String description,
-                             String contactSummary, String nextContactTime, HttpServletRequest request){
+                             String contactSummary, String nextContactTime,String path, HttpServletRequest request){
         ModelAndView mv = new ModelAndView();
         String createBy = ((User)request.getSession().getAttribute("user")).getName();
         String createTime = DateTimeUtil.getSysTime();
@@ -127,7 +128,11 @@ public class TranController {
 
         if(flag){
             // 如果添加交易成功，跳转到列表页
-            mv.setViewName("redirect:/workbench/transaction/index.jsp");
+            if(path.equals("") || path == null) {
+                mv.setViewName("redirect:/workbench/transaction/index.jsp");
+            }else{
+                mv.setViewName("redirect:/workbench/contacts/detail.do?id="+path);
+            }
         }
         return mv;
     }
