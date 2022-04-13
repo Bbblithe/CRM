@@ -128,15 +128,16 @@
 		})
 
 		$("#deleteBtn").click(function (){
+			param = "id="+"${con.id}"
 			if(confirm("你确定要删除吗")){
 				$.ajax({
-					url:"workbench/clue/deleteClue.do",
-					data:{"id":"${clue.id}"},
+					url:"workbench/contacts/delete.do",
+					data:param,
 					type:"post",
 					dataType:"json",
 					success:function(result){
 						if(result){
-							window.location.href = "workbench/clue/index.jsp";
+							window.location.href = "workbench/contacts/index.jsp"
 						}else{
 							alert("删除失败");
 						}

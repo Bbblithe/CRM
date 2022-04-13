@@ -349,11 +349,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <input type="hidden" id="hide-birth">
 
 	<!-- 创建联系人的模态窗口 -->
-	<div class="modal fade" id="createContactsModal" role="dialog">
+	<div class="modal fade" id="createClueModal" role="dialog">
 		<div class="modal-dialog" role="document" style="width: 85%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" onclick="$('#createContactsModal').modal('hide');">
+					<button type="button" class="close" onclick="$('#createClueModal').modal('hide');">
 						<span aria-hidden="true">×</span>
 					</button>
 					<h4 class="modal-title" id="myModalLabelx">创建联系人</h4>
@@ -392,9 +392,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</c:forEach>
 								</select>
 							</div>
-							
 						</div>
-						
 						<div class="form-group">
 							<label for="create-job" class="col-sm-2 control-label">职位</label>
 							<div class="col-sm-10" style="width: 300px;">
@@ -587,10 +585,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
 	
 	<div>
 		<div style="position: relative; left: 10px; top: -10px;">
