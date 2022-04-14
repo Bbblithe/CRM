@@ -61,4 +61,16 @@
                lockState,deptno,allowIps,createTime,createBy,
                editTime,editBy from crm.tbl_user where id!=(select owner from crm.tbl_contacts where tbl_contacts.id = #{id})
     </select>
+
+    <select id="selectUserByCustomerId" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id=(select owner from crm.tbl_customer where tbl_customer.id = #{id})
+    </select>
+
+    <select id="selectOtherUserByCustomerId" resultType="User">
+        select id,loginAct,name,loginPwd,email,expireTime,
+               lockState,deptno,allowIps,createTime,createBy,
+               editTime,editBy from crm.tbl_user where id!=(select owner from crm.tbl_customer where tbl_customer.id = #{id})
+    </select>
 </mapper>

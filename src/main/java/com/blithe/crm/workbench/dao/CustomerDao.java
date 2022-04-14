@@ -11,4 +11,14 @@ public interface CustomerDao {
     int save(Customer cus);
 
     List<String> getCustomerName(String name);
+
+    int getTotalByName(Customer customer);
+
+    List<Customer> getDataListByName(Customer customer);
+
+    Customer getCustomerById(String id);
+
+    int update(Customer c);
+
+    int delete(String id);
 }

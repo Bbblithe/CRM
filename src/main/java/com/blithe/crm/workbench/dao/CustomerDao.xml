@@ -22,6 +22,68 @@
         select name from crm.tbl_customer where name like '%' #{name} '%'
     </select>
 
+    <select id="getTotalByName" resultType="Int">
+        select count(c.id)
+        from crm.tbl_customer c
+        join crm.tbl_user u on c.owner = u.id
+        <where>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="website!=null and website!=''">
+                and c.website like '%' #{website} '%'
+            </if>
+            <if test="name!=null and name!=''">
+                and c.name like '%' #{name} '%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and c.phone like '%' #{phone} '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getDataListByName" resultType="Customer">
+        select c.id, u.name as owner, c.name, c.website, c.phone, c.createBy, c.createTime, c.editBy, c.editTime, c.contactSummary, c.nextContactTime, c.description, c.address
+        from crm.tbl_customer c
+        join crm.tbl_user u on c.owner = u.id
+        <where>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="website!=null and website!=''">
+                and c.website like '%' #{website} '%'
+            </if>
+            <if test="name!=null and name!=''">
+                and c.name like '%' #{name} '%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and c.phone like '%' #{phone} '%'
+            </if>
+        </where>
+        order by c.createTime
+        <if test="editTime!=null and editTime!=''">
+            and c.editTime
+        </if>
+        desc
+    </select>
+
+    <select id="getCustomerById" resultType="Customer">
+        select id, owner, name, website, phone, createBy, createTime, editBy,
+               editTime, contactSummary, nextContactTime, description, address
+        from crm.tbl_customer where id = #{id}
+    </select>
+
+    <update id="update" >
+        update tbl_customer set
+            owner=#{owner},name=#{name},phone=#{phone},editBy=#{editBy},editTime=#{editTime},
+            website=#{website},contactSummary=#{contactSummary},nextContactTime=#{nextContactTime},
+            description=#{description},address=#{address}
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from tbl_customer where id=#{id}
+    </delete>
 </mapper>
 
 

@@ -33,5 +33,7 @@ public interface UserDao {
 
     List<User> selectOtherUserByContacts(String id);
 
-    // int selectUser(@Param("loginAct")String loginAct, @Param("loginPwd") String loginPwd);
+    User selectUserByCustomerId(String id);
+
+    List<User> selectOtherUserByCustomerId(String id);
 }
