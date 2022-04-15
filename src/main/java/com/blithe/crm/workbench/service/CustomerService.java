@@ -24,4 +24,6 @@ public interface CustomerService {
     boolean update(Customer c);
 
     boolean delete(String[] ids);
+
+    Customer getCustomer(String id);
 }

@@ -155,7 +155,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		$("#updateBtn").click(function (){
 			let id = $("#hidden-id").val();
-			alert(id);
 			$.ajax({
 				url:"workbench/customer/update.do",
 				data:{

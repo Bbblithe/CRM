@@ -11,6 +11,7 @@ import com.blithe.crm.workbench.service.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -102,5 +103,13 @@ public class CustomerController {
     public boolean delete(HttpServletRequest request){
         String[] ids = request.getParameterValues("id");
         return customerService.delete(ids);
+    }
+
+    @RequestMapping("detail.do")
+    public ModelAndView detail(String id){
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("cus",customerService.getCustomer(id));
+        mv.setViewName("/workbench/customer/detail.jsp");
+        return mv;
     }
 }

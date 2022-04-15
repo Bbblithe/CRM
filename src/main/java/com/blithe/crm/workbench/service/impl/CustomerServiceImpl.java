@@ -77,4 +77,9 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return true;
     }
+
+    @Override
+    public Customer getCustomer(String id) {
+        return customerDao.getCustomerById(id);
+    }
 }

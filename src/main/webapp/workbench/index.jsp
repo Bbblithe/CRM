@@ -1,7 +1,9 @@
+<%@ page import="com.blithe.crm.setting.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+User user = (User) application.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
@@ -59,12 +61,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="modal-body">
 					<div style="position: relative; left: 40px;">
-						姓名：<b>张三</b><br><br>
-						登录帐号：<b>zhangsan</b><br><br>
-						组织机构：<b>1005，市场部，二级部门</b><br><br>
-						邮箱：<b>zhangsan@bjpowernode.com</b><br><br>
-						失效时间：<b>2017-02-14 10:10:10</b><br><br>
-						允许访问IP：<b>127.0.0.1,192.168.100.2</b>
+						姓名：<b>${user.name}</b><br><br>
+						登录帐号：<b>${user.loginAct}</b><br><br>
+						组织机构：<b>${user.deptno}，市场部门</b><br><br>
+						邮箱：<b>${user.email}</b><br><br>
+						失效时间：<b>${user.expireTime}</b><br><br>
+						允许访问IP：<b>${user.allowIps}</b>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -144,7 +146,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul>
 				<li class="dropdown user-dropdown">
 					<a href="javascript:void(0)" style="text-decoration: none; color: white;" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="glyphicon glyphicon-user"></span> 小波 <span class="caret"></span>
+						<span class="glyphicon glyphicon-user"></span> ${user.name} <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>
